@@ -10,6 +10,9 @@
     ],
     "run": "emit_context_md",
     "risk": "read",
-    "status": "locked"
+    "status": "locked",
+    "coverage_policy": {
+      "require_no_open_escalations": true
+    }
   }
 }

@@ -10,6 +10,9 @@
       "gap.audit.serialization_runtime"
     ],
     "run": "emit_context_md",
-    "risk": "read"
+    "risk": "read",
+    "coverage_policy": {
+      "require_no_open_escalations": true
+    }
   }
 }

@@ -78,6 +78,25 @@ def main(argv: list[str] | None = None) -> int:
     esc.add_argument("--gap", required=True)
     esc.add_argument("--reason", default="")
 
+    ap = sub.add_parser("attach-pack", help="Compose another Gap Pack onto a product")
+    ap.add_argument("--graph", type=Path, required=True)
+    ap.add_argument("--pack", required=True)
+
+    ev = sub.add_parser("evidence", help="Attach real-world evidence URL/ref to the graph")
+    ev.add_argument("--graph", type=Path, required=True)
+    ev.add_argument("--kind", required=True)
+    ev.add_argument("--ref", required=True)
+    ev.add_argument("--note", default="")
+    ev.add_argument("--seal", default=None)
+    ev.add_argument("--gap", default=None)
+
+    sc = sub.add_parser("seal-code", help="Deterministic seal (provider code:) — Beyond Jev")
+    sc.add_argument("--graph", type=Path, required=True)
+    sc.add_argument("--gap", required=True)
+    sc.add_argument("--ok", action="store_true", help="Predicate passed")
+    sc.add_argument("--json", help="JSON value with {ok:true} or custom")
+    sc.add_argument("--predicate", default="code:predicate", help="Provider label after code:")
+
     args = p.parse_args(argv)
 
     if args.cmd == "open":
@@ -235,6 +254,34 @@ def main(argv: list[str] | None = None) -> int:
         save(g, args.graph)
         print(json.dumps({"ok": True, "gap": args.gap, "coverage": coverage_ledger(g)}, ensure_ascii=False, indent=2))
         return 0
+
+    if args.cmd == "attach-pack":
+        r = attach_pack(g, args.pack)
+        if r.get("ok"):
+            save(g, args.graph)
+        print(json.dumps(r, ensure_ascii=False, indent=2))
+        return 0 if r.get("ok") else 2
+
+    if args.cmd == "evidence":
+        eid = attach_evidence(g, kind=args.kind, ref=args.ref, note=args.note, seal_id=args.seal, gap_id=args.gap)
+        save(g, args.graph)
+        print(json.dumps({"ok": True, "id": eid, "evidence": g["evidence"][eid]}, ensure_ascii=False, indent=2))
+        return 0
+
+    if args.cmd == "seal-code":
+        if args.json:
+            value = json.loads(args.json)
+        elif args.ok:
+            value = {"ok": True, "predicate": args.predicate}
+        else:
+            print("need --ok or --json", file=sys.stderr)
+            return 2
+        cid = add_candidate(g, args.gap, value, by="code")
+        prov = args.predicate if args.predicate.startswith("code:") else f"code:{args.predicate}"
+        r = try_seal(g, args.gap, cid, {}, prov)
+        save(g, args.graph)
+        print(json.dumps(r, ensure_ascii=False, indent=2))
+        return 0 if r.get("ok") else 2
 
     return 2
 

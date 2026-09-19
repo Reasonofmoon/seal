@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from typing import Any
 from .graph import sealed_facts
+from .coverage import ledger as coverage_ledger
 
 def emit_context_md(graph: dict[str, Any], out: Path) -> Path:
     facts = sealed_facts(graph)
@@ -34,6 +35,20 @@ def emit_context_md(graph: dict[str, Any], out: Path) -> Path:
             continue
         if str(k).startswith("gap."):
             continue
+    lines.append("## Coverage ledger")
+    led = coverage_ledger(graph)
+    lines.append(f"- total_seals: {led['total_seals']}")
+    lines.append(f"- auto_or_code: {led['auto_or_code']}")
+    lines.append(f"- human: {led['human']}")
+    lines.append(f"- escalate_open: {led['escalate_open'] or '[]'}")
+    lines.append(f"- auto_rate: {led['auto_rate']:.3f}")
+    lines.append("")
+    ev = graph.get("evidence") or {}
+    if ev:
+        lines.append("## Evidence")
+        for eid, e in ev.items():
+            lines.append(f"- `{eid}` ({e.get('kind')}): {e.get('ref')} — {e.get('note','')}")
+        lines.append("")
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return out
 

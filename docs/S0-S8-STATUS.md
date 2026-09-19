@@ -1,10 +1,8 @@
-# SEAL status S0–S8
+# SEAL status
 
-| Phase | Status | Note |
-|-------|--------|------|
-| S1–S7 | done | see prior docs |
-| S6 Vein | done | |
-| S7 UKDL subset | done | |
-| S8 Gap Board | done | docs/S8-GAP-BOARD.md |
-
-Kernel conquest roadmap complete through Gap Board.
+| Phase | Status |
+|-------|--------|
+| S1–S8 kernel | done |
+| Coverage Gate (Beyond Jev) | done — see COVERAGE-POLICY.md / BEYOND-JEV.md |
+| Public-repo cases | done — examples/public-repos/ |
+| CLI attach-pack / evidence / seal-code | done (0.3.1) |

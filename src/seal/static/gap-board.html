@@ -149,6 +149,11 @@ footer { color: var(--muted); font-size: 0.75rem; padding: 0 1.5rem 2rem; }
     <div class="grid" id="gaps"></div>
   </section>
   <section>
+    <h2>Coverage ledger (beyond accuracy-only)</h2>
+    <div class="pillrow" id="coverage"></div>
+    <div class="sub" id="escalate" style="margin-top:0.5rem"></div>
+  </section>
+  <section>
     <h2>Effects (post-seal only)</h2>
     <div class="effects" id="effects"></div>
   </section>
@@ -202,6 +207,17 @@ document.getElementById('next').innerHTML = nextCards.length
   ? nextCards.map(g => cardHTML(g, true)).join('')
   : '<div class="sub">No open unblocked gaps — foundation may be sealed.</div>';
 document.getElementById('gaps').innerHTML = BOARD.gaps.map(g => cardHTML(g)).join('');
+const cov = BOARD.coverage || {};
+const cc = cov.counts || {};
+document.getElementById('coverage').innerHTML = [
+  ['auto', cc.auto||0], ['code', cc.code||0], ['human', cc.human||0],
+  ['escalate', cc.escalate||0], ['auto_rate', (cov.auto_rate!=null?cov.auto_rate.toFixed(2):'—')]
+].map(([k,v]) => '<span class="pill">'+k+' <strong>'+v+'</strong></span>').join('');
+const esc = cov.escalate_open || [];
+document.getElementById('escalate').textContent = esc.length
+  ? ('Open escalations: ' + esc.join(', '))
+  : 'No open escalations.';
+
 document.getElementById('effects').innerHTML = (BOARD.effects || []).map(e =>
   '<div class="effect"><span class="badge ' + esc(e.status) + '">' + esc(e.status) + '</span>' +
   '<div class="meta" style="margin-top:0.4rem">' + esc(e.id) + '</div>' +

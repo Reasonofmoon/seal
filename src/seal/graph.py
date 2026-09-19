@@ -219,7 +219,12 @@ def evaluate_lock(gap: dict[str, Any], answers: dict[str, Any]) -> tuple[bool, l
     return (len(failures) == 0, failures)
 
 def refresh_effects(graph: dict[str, Any]) -> None:
-    """Unlock when required gaps are sealed and required prior effects are done."""
+    """Unlock when gaps/effects prerequisites hold AND coverage_policy passes.
+
+    Effect may set coverage_policy: {require_no_open_escalations, min_auto_rate, min_seals}.
+    Defaults merge from schemas/lock-policy.json → coverage.effect_default.
+    """
+    from .policy import coverage_defaults
     sealed = {gid for gid, g in graph["gaps"].items() if g["status"] == "sealed"}
     done_effects = {eid for eid, e in graph["effects"].items() if e.get("status") == "done"}
     for eff in graph["effects"].values():
@@ -227,7 +232,28 @@ def refresh_effects(graph: dict[str, Any]) -> None:
             continue
         need_gaps = set(eff.get("after") or [])
         need_fx = set(eff.get("after_effects") or [])
-        eff["status"] = "ready" if (need_gaps <= sealed and need_fx <= done_effects) else "locked"
+        prereq = need_gaps <= sealed and need_fx <= done_effects
+        policy = {**coverage_defaults(), **(eff.get("coverage_policy") or {})}
+        # Only enforce coverage once gap/effect prereqs are met (otherwise stay locked quietly)
+        cov_ok, cov_fail = (True, [])
+        if prereq and policy:
+            cov_ok, cov_fail = meets_policy(graph, policy)
+        if prereq and cov_ok:
+            eff["status"] = "ready"
+            eff.pop("lock_reason", None)
+        else:
+            eff["status"] = "locked"
+            reasons = []
+            if not prereq:
+                missing_g = sorted(need_gaps - sealed)
+                missing_e = sorted(need_fx - done_effects)
+                if missing_g:
+                    reasons.append(f"unsealed:{missing_g}")
+                if missing_e:
+                    reasons.append(f"effects:{missing_e}")
+            if prereq and not cov_ok:
+                reasons.extend(cov_fail)
+            eff["lock_reason"] = reasons
 
 def try_seal(
     graph: dict[str, Any],
@@ -244,7 +270,25 @@ def try_seal(
 
     state = project(graph, gap_id, candidate_id)
     questions = compile_questions(gap)
-    ok, failures = evaluate_lock(gap, answers)
+    if provider.startswith("code:") or provider == "code":
+        # Deterministic seal: candidate.value must be truthy predicate result or {"ok": true}
+        val = graph["candidates"][candidate_id].get("value")
+        ok_code = val is True or val == 1 or (isinstance(val, dict) and val.get("ok") is True)
+        if not ok_code:
+            return {
+                "ok": False,
+                "error": "code_predicate_false",
+                "kind": "code",
+                "detail": "code: provider requires candidate.value True or {ok: true}",
+            }
+        ok, failures = True, []
+    elif provider.startswith("human:") or provider == "human":
+        # Human coseal: skip mint answers; still require non-empty candidate
+        if graph["candidates"][candidate_id].get("value") in (None, "", [], {}):
+            return {"ok": False, "error": "empty_human_value", "kind": "human"}
+        ok, failures = True, []
+    else:
+        ok, failures = evaluate_lock(gap, answers)
     if not ok:
         graph["journal"].append({
             "op": "strike_fail",
@@ -303,6 +347,11 @@ def status(graph: dict[str, Any]) -> dict[str, Any]:
         "blocked": blocked,
         "sealed": [gid for gid, g in graph["gaps"].items() if g["status"] == "sealed"],
         "effects": {eid: e["status"] for eid, e in graph["effects"].items()},
+        "effect_locks": {
+            eid: e.get("lock_reason")
+            for eid, e in graph["effects"].items()
+            if e.get("lock_reason")
+        },
         "candidates": len(graph["candidates"]),
         "seals": len(graph["seals"]),
         "next": suggest_next(graph, limit=5),

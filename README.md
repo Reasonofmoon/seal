@@ -51,6 +51,11 @@ seal strike --gap … --candidate … --provider heuristic|typesafe
 seal status          # open / blocked / sealed / next (Vein)
 seal effect --id …   # refused until seals unlock it
 seal board  --out board.html
+seal coverage --graph …
+seal escalate --gap … --reason "…"
+seal seal-code --gap … --ok
+seal attach-pack --pack blogrich.trust
+seal evidence --kind github_repo --ref https://github.com/…
 ```
 
 ---

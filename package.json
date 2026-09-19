@@ -1,6 +1,6 @@
 {
   "name": "seal-graph",
-  "version": "0.1.0",
+  "version": "0.3.1",
   "private": true,
   "description": "Optional Node deps for TypeSafe/Jev mint. The Python kernel has zero runtime deps.",
   "dependencies": {

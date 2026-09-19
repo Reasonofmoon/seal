@@ -7,6 +7,7 @@ from typing import Any
 from .graph import status
 from .vein import suggest_next, snapshot
 from .ukdl_subset import dump as ukdl_dump
+from .coverage import ledger as snapshot_coverage
 
 RISK_ORDER = {"read": 0, "product_foundation": 1, "user_trust": 2, "irreversible": 3}
 _TEMPLATE = Path(__file__).resolve().parent / "static" / "gap-board.html"
@@ -73,6 +74,8 @@ def board_model(graph: dict[str, Any]) -> dict[str, Any]:
         "effects": effects,
         "vein": snapshot(graph),
         "seal_version": graph.get("seal_version", "0.1.0"),
+        "coverage": snapshot_coverage(graph),
+        "evidence": list((graph.get("evidence") or {}).values())[:20],
     }
 
 
