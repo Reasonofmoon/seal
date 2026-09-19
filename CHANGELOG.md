@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.3 — 2026-09-19
+
+### Practical adoption
+- `seal init` scaffolds `.seal/graph.json`
+- `scripts/demo.sh` one-shot demo
+- CI workflow recipe + `recipes/github-seal-check.md`
+- `AGENTS.md` for coding agents
+- Fleet council channel kickoff (ops/deploy/QA/moonlang/frontier)
+
 ## 0.3.2 — 2026-09-19
 
 ### README visuals

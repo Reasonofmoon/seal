@@ -74,6 +74,19 @@ If generation alone advances your “product,” you do not have SEAL — you ha
 
 ---
 
+
+## Practical: use it today
+
+```bash
+git clone https://github.com/Reasonofmoon/seal.git && cd seal
+bash scripts/demo.sh          # open → seal-code → board + coverage
+PYTHONPATH=src python3 src/seal/cli.py init --dir .seal --id myapp --idea "…"
+```
+
+- **CI:** [[recipes/github-actions-seal-ci.yml](recipes/github-actions-seal-ci.yml) (copy to `.github/workflows/`)](.github/workflows/seal-ci.yml) runs unit tests + demo smoke  
+- **Merge gate recipe:** [`recipes/github-seal-check.md`](recipes/github-seal-check.md)  
+- **Coding agents:** [`AGENTS.md`](AGENTS.md) — no seal, no advance  
+
 ## Kernel loop
 
 ```

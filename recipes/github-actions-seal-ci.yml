@@ -1,0 +1,23 @@
+name: SEAL CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests
+        run: PYTHONPATH=src python3 -m unittest discover -s tests -v
+      - name: Demo smoke
+        run: bash scripts/demo.sh
+      - name: UKDL subset roundtrip
+        run: |
+          PYTHONPATH=src python3 src/seal/cli.py dump --graph examples/readmaster-habit/graph.json --out /tmp/x.seal.ukdl
+          PYTHONPATH=src python3 src/seal/cli.py load-ukdl --file /tmp/x.seal.ukdl --validate-only

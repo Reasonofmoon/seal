@@ -366,3 +366,24 @@ def mark_escalated(graph: dict[str, Any], gap_id: str, reason: str = "") -> None
     graph["gaps"][gap_id]["escalated"] = True
     graph["gaps"][gap_id]["escalate_reason"] = reason
     graph.setdefault("journal", []).append({"op": "escalate", "gap": gap_id, "reason": reason, "at": _now()})
+
+
+def init_workspace(dir_path: Path, product_id: str, idea: str, pack_id: str = "edtech.foundation") -> dict:
+    """Scaffold a local SEAL product folder: graph.json + README stub."""
+    dir_path = Path(dir_path)
+    dir_path.mkdir(parents=True, exist_ok=True)
+    g = open_product(product_id, idea, pack_id)
+    save(g, dir_path / "graph.json")
+    readme = dir_path / "README.md"
+    if not readme.exists():
+        readme.write_text(
+            f"# {product_id}\n\n"
+            f"> SEAL product. Idea: {idea}\n\n"
+            f"Pack: `{pack_id}`\n\n"
+            f"```bash\n"
+            f"PYTHONPATH=../src python3 -m seal.cli status --graph graph.json\n"
+            f"PYTHONPATH=../src python3 -m seal.cli board --graph graph.json --out board.html\n"
+            f"```\n",
+            encoding="utf-8",
+        )
+    return {"ok": True, "dir": str(dir_path), "graph": str(dir_path / "graph.json"), "status": status(g)}

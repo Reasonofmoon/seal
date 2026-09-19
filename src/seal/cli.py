@@ -5,7 +5,7 @@ from pathlib import Path
 # allow running without install
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from seal.graph import open_product, save, load, add_candidate, project, compile_questions, try_seal, status, refresh_effects
+from seal.graph import open_product, save, load, add_candidate, project, compile_questions, try_seal, status, refresh_effects, init_workspace
 from seal.vein import suggest_next, snapshot
 from seal.ukdl_subset import dump as ukdl_dump, parse as ukdl_parse, validate_text, UkdlSubsetError
 from seal.board import write_board, board_model
@@ -17,6 +17,12 @@ from seal.emit import emit_context_md, emit_aplus_passport, emit_codegen_stub
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="seal", description="SEAL — no seal, no advance")
     sub = p.add_subparsers(dest="cmd", required=True)
+
+    ini = sub.add_parser("init", help="Scaffold a local SEAL product folder (graph.json + README)")
+    ini.add_argument("--dir", type=Path, required=True)
+    ini.add_argument("--id", required=True)
+    ini.add_argument("--idea", required=True)
+    ini.add_argument("--pack", default="edtech.foundation")
 
     o = sub.add_parser("open", help="Open a gap pack for a product idea")
     o.add_argument("--id", required=True)
@@ -98,6 +104,11 @@ def main(argv: list[str] | None = None) -> int:
     sc.add_argument("--predicate", default="code:predicate", help="Provider label after code:")
 
     args = p.parse_args(argv)
+
+    if args.cmd == "init":
+        r = init_workspace(args.dir, args.id, args.idea, args.pack)
+        print(json.dumps(r, ensure_ascii=False, indent=2))
+        return 0
 
     if args.cmd == "open":
         g = open_product(args.id, args.idea, args.pack)
