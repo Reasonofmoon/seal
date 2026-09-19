@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.5 — 2026-09-19
+
+### Council seal — fleet Coverage Gate
+- Document harness-only `code` gates (Herdr / deploy / QA / moonlang / Gap)
+- Fail · 「확인 실패」 · API fail → escalate; unapproved READY/merge/publish/redeploy = 0
+- Evidence SSOT `runs/<id>/*-done.md`; Strike ≠ adopt; `human_form_required`
+
 ## 0.3.4 — 2026-09-19
 
 ### README overwhelm pass
