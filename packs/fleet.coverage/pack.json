@@ -1,0 +1,18 @@
+{
+  "id": "fleet.coverage",
+  "version": "0.3.6",
+  "title": "Fleet Coverage Gate (council 2026-09-19)",
+  "description": "Harness-only code gates for Herdr / deploy / QA / moonlang / Gap. Evidence SSOT = runs/<id>/*-done.md.",
+  "lang": "ko",
+  "gaps": [
+    "gap.fleet.harness_code_only",
+    "gap.fleet.done_md_ssot",
+    "gap.fleet.no_auto_approve",
+    "gap.fleet.claim_gate",
+    "gap.fleet.env_ready",
+    "gap.fleet.github_qa_score",
+    "gap.fleet.human_form_required",
+    "gap.fleet.adopt_decision",
+    "gap.fleet.primary_source"
+  ]
+}

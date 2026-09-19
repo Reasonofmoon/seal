@@ -10,7 +10,7 @@ from seal.vein import suggest_next, snapshot
 from seal.ukdl_subset import dump as ukdl_dump, parse as ukdl_parse, validate_text, UkdlSubsetError
 from seal.board import write_board, board_model
 from seal.coverage import ledger as coverage_ledger
-from seal.graph import mark_escalated, attach_evidence, attach_pack
+from seal.graph import mark_escalated, attach_evidence, attach_pack, set_adopt, stamp_gap_human_form, mark_primary_source_missing
 from seal.mint_heuristic import mint
 from seal.emit import emit_context_md, emit_aplus_passport, emit_codegen_stub
 
@@ -102,6 +102,21 @@ def main(argv: list[str] | None = None) -> int:
     sc.add_argument("--ok", action="store_true", help="Predicate passed")
     sc.add_argument("--json", help="JSON value with {ok:true} or custom")
     sc.add_argument("--predicate", default="code:predicate", help="Provider label after code:")
+
+    ad = sub.add_parser("adopt", help="Set adopt_decision on a seal (adopt|reject|defer)")
+    ad.add_argument("--graph", type=Path, required=True)
+    ad.add_argument("--seal", required=True)
+    ad.add_argument("--decision", required=True, choices=["adopt", "reject", "defer"])
+
+    hf = sub.add_parser("human-form", help="Mark gap human_form_required / submitted for next seal")
+    hf.add_argument("--graph", type=Path, required=True)
+    hf.add_argument("--gap", required=True)
+    hf.add_argument("--submitted", required=True, choices=["true", "false"])
+
+    ps = sub.add_parser("primary-source-missing", help="Mark gap PRIMARY_SOURCE_NOT_FOUND")
+    ps.add_argument("--graph", type=Path, required=True)
+    ps.add_argument("--gap", required=True)
+    ps.add_argument("--reason", default="")
 
     args = p.parse_args(argv)
 
@@ -293,6 +308,37 @@ def main(argv: list[str] | None = None) -> int:
         save(g, args.graph)
         print(json.dumps(r, ensure_ascii=False, indent=2))
         return 0 if r.get("ok") else 2
+
+    if args.cmd == "adopt":
+        r = set_adopt(g, args.seal, args.decision)
+        if r.get("ok"):
+            save(g, args.graph)
+        print(json.dumps(r, ensure_ascii=False, indent=2))
+        return 0 if r.get("ok") else 2
+
+    if args.cmd == "human-form":
+        submitted = args.submitted == "true"
+        stamp_gap_human_form(g, args.gap, submitted)
+        save(g, args.graph)
+        print(json.dumps({
+            "ok": True,
+            "gap": args.gap,
+            "human_form_required": True,
+            "human_form_submitted": submitted,
+            "coverage": coverage_ledger(g),
+        }, ensure_ascii=False, indent=2))
+        return 0
+
+    if args.cmd == "primary-source-missing":
+        mark_primary_source_missing(g, args.gap, args.reason)
+        save(g, args.graph)
+        print(json.dumps({
+            "ok": True,
+            "gap": args.gap,
+            "primary_source_missing": True,
+            "coverage": coverage_ledger(g),
+        }, ensure_ascii=False, indent=2))
+        return 0
 
     return 2
 

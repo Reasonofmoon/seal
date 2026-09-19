@@ -1,0 +1,19 @@
+{
+  "id": "gap.fleet.harness_code_only",
+  "ask": "Every code gate runs as a harness step (never pane prompt). Keys only via env/box-secrets.",
+  "risk": "product_foundation",
+  "schema": { "type": "object", "required": ["ok"] },
+  "requires": [],
+  "fillers": ["code", "human", "import"],
+  "accept": [
+    {
+      "id": "predicate_ok",
+      "type": "choice",
+      "instructions": {
+        "question": "Does the harness step evidence prove this fleet invariant holds?"
+      },
+      "choice_in": ["pass"],
+      "confidence_gte": 0.55
+    }
+  ]
+}

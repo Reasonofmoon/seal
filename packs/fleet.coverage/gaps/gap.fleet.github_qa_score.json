@@ -1,0 +1,19 @@
+{
+  "id": "gap.fleet.github_qa_score",
+  "ask": "GitHub QA: github-qa-score.mjs on open PR/CI/security; score/API fail → escalate.",
+  "risk": "product_foundation",
+  "schema": { "type": "object", "required": ["ok"] },
+  "requires": [],
+  "fillers": ["code", "human", "import"],
+  "accept": [
+    {
+      "id": "predicate_ok",
+      "type": "choice",
+      "instructions": {
+        "question": "Does the harness step evidence prove this fleet invariant holds?"
+      },
+      "choice_in": ["pass"],
+      "confidence_gte": 0.55
+    }
+  ]
+}

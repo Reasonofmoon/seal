@@ -1,0 +1,20 @@
+{
+  "id": "gap.fleet.human_form_required",
+  "ask": "Frontier Gap: human_form_required — agent auto ≠ success; form must be submitted.",
+  "risk": "user_trust",
+  "human_form_required": true,
+  "schema": { "type": "object", "required": ["ok"] },
+  "requires": [],
+  "fillers": ["human", "code"],
+  "accept": [
+    {
+      "id": "form_submitted",
+      "type": "choice",
+      "instructions": {
+        "question": "Was the human form actually submitted (not agent-simulated)?"
+      },
+      "choice_in": ["pass"],
+      "confidence_gte": 0.7
+    }
+  ]
+}

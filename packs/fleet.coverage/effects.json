@@ -1,0 +1,24 @@
+{
+  "effect.fleet.ops_ready": {
+    "id": "effect.fleet.ops_ready",
+    "after": [
+      "gap.fleet.harness_code_only",
+      "gap.fleet.done_md_ssot",
+      "gap.fleet.no_auto_approve",
+      "gap.fleet.claim_gate",
+      "gap.fleet.env_ready",
+      "gap.fleet.github_qa_score",
+      "gap.fleet.human_form_required",
+      "gap.fleet.adopt_decision",
+      "gap.fleet.primary_source"
+    ],
+    "run": "emit_context_md",
+    "risk": "read",
+    "coverage_policy": {
+      "require_no_open_escalations": true,
+      "require_adopt_decision": true,
+      "require_human_form": true,
+      "require_primary_source": true
+    }
+  }
+}

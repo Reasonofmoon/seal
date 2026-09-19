@@ -1,0 +1,19 @@
+{
+  "id": "gap.fleet.adopt_decision",
+  "ask": "Strike success ≠ Seal adopt. Every seal feeding ops_ready needs adopt_decision in {adopt,reject,defer}.",
+  "risk": "product_foundation",
+  "schema": { "type": "object", "required": ["ok"] },
+  "requires": [],
+  "fillers": ["human", "code"],
+  "accept": [
+    {
+      "id": "decision_recorded",
+      "type": "choice",
+      "instructions": {
+        "question": "Is adopt_decision recorded on seals for effect.after gaps?"
+      },
+      "choice_in": ["pass"],
+      "confidence_gte": 0.55
+    }
+  ]
+}

@@ -8,7 +8,7 @@ from typing import Any
 from .hashutil import sha256_obj
 from .policy import band, provider_allowed
 from .vein import record_success, record_fail
-from .coverage import classify_path, ledger as coverage_ledger, meets_policy
+from .coverage import classify_path, ledger as coverage_ledger, meets_policy, stamp_human_form
 
 ROOT = Path(__file__).resolve().parents[2]
 PACKS = ROOT / "packs"
@@ -237,7 +237,9 @@ def refresh_effects(graph: dict[str, Any]) -> None:
         # Only enforce coverage once gap/effect prereqs are met (otherwise stay locked quietly)
         cov_ok, cov_fail = (True, [])
         if prereq and policy:
-            cov_ok, cov_fail = meets_policy(graph, policy)
+            cov_ok, cov_fail = meets_policy(
+                graph, policy, effect_after=list(need_gaps) or None
+            )
         if prereq and cov_ok:
             eff["status"] = "ready"
             eff.pop("lock_reason", None)
@@ -262,6 +264,7 @@ def try_seal(
     answers: dict[str, Any],
     provider: str,
     strike_id: str | None = None,
+    adopt_decision: str | None = None,
 ) -> dict[str, Any]:
     gap = graph["gaps"][gap_id]
     ok_p, reason = provider_allowed(gap["risk"], provider)
@@ -301,13 +304,28 @@ def try_seal(
         record_fail(graph, gap_id)
         return {"ok": False, "error": "lock_failed", "failures": failures, "kind": "lock"}
 
+    answers = dict(answers or {})
+    # human_form: allow seal on escalate path when required but not submitted
+    cov_ans = answers.get("coverage") if isinstance(answers.get("coverage"), dict) else {}
+    hf_submitted = bool(
+        answers.get("human_form_submitted")
+        or cov_ans.get("human_form_submitted")
+        or gap.get("human_form_submitted")
+    )
+    path_hint = None
+    if gap.get("human_form_required") and not hf_submitted:
+        # Prefer escalate path suggestion when auto/code seals without form
+        if provider.startswith("code:") or provider == "code" or provider.startswith("heuristic") or provider.startswith("typesafe"):
+            path_hint = "escalate"
+            mark_escalated(graph, gap_id, "human_form_required but not submitted")
+
     sid = f"seal.{len(graph['seals'])+1:04d}"
     cand = graph["candidates"][candidate_id]
     path = classify_path(
         provider=provider,
         answers=answers,
         by=cand.get("by"),
-        escalated=bool(gap.get("escalated")),
+        escalated=bool(gap.get("escalated")) or path_hint == "escalate",
     )
     seal = {
         "id": sid,
@@ -324,13 +342,69 @@ def try_seal(
         "deprecated": False,
         "superseded_by": None,
     }
+    stamp_human_form(seal, hf_submitted)
+    if adopt_decision is not None:
+        seal["adopt_decision"] = adopt_decision
+    if gap.get("primary_source_missing") or answers.get("PRIMARY_SOURCE_NOT_FOUND"):
+        seal["primary_source_missing"] = True
+        seal["coverage"]["primary_source_missing"] = True
     graph["seals"][sid] = seal
     gap["status"] = "sealed"
     gap["sealed_by"] = sid
     record_success(graph, gap_id)
     refresh_effects(graph)
     graph["journal"].append({"op": "seal", "id": sid, "gap": gap_id, "at": _now()})
-    return {"ok": True, "seal": seal}
+    out = {"ok": True, "seal": seal}
+    if path_hint == "escalate" and not hf_submitted:
+        out["suggest"] = "escalate"
+        out["note"] = "human_form_required but human_form_submitted=false; effect stays locked under require_human_form"
+    return out
+
+
+def set_adopt(graph: dict[str, Any], seal_id: str, decision: str) -> dict[str, Any]:
+    """Set adopt_decision on a seal: adopt | reject | defer."""
+    from .coverage import ADOPT_DECISIONS
+    if seal_id not in graph.get("seals", {}):
+        raise KeyError(seal_id)
+    if decision not in ADOPT_DECISIONS:
+        return {"ok": False, "error": "invalid_adopt_decision", "allowed": sorted(ADOPT_DECISIONS)}
+    graph["seals"][seal_id]["adopt_decision"] = decision
+    graph.setdefault("journal", []).append({
+        "op": "adopt", "seal": seal_id, "decision": decision, "at": _now(),
+    })
+    refresh_effects(graph)
+    return {"ok": True, "seal": seal_id, "adopt_decision": decision}
+
+
+def mark_primary_source_missing(graph: dict[str, Any], gap_id: str, reason: str = "") -> None:
+    """Mark gap (and active seal if any) as PRIMARY_SOURCE_NOT_FOUND / missing."""
+    if gap_id not in graph["gaps"]:
+        raise KeyError(gap_id)
+    graph["gaps"][gap_id]["primary_source_missing"] = True
+    graph["gaps"][gap_id]["primary_source_reason"] = reason
+    sid = graph["gaps"][gap_id].get("sealed_by")
+    if sid and sid in graph.get("seals", {}):
+        graph["seals"][sid]["primary_source_missing"] = True
+        graph["seals"][sid].setdefault("coverage", {})["primary_source_missing"] = True
+    graph.setdefault("journal", []).append({
+        "op": "primary_source_missing", "gap": gap_id, "reason": reason, "at": _now(),
+    })
+    refresh_effects(graph)
+
+
+def stamp_gap_human_form(graph: dict[str, Any], gap_id: str, submitted: bool) -> None:
+    """Mark gap human_form_required / human_form_submitted for next seal attempt."""
+    if gap_id not in graph["gaps"]:
+        raise KeyError(gap_id)
+    graph["gaps"][gap_id]["human_form_required"] = True
+    graph["gaps"][gap_id]["human_form_submitted"] = bool(submitted)
+    sid = graph["gaps"][gap_id].get("sealed_by")
+    if sid and sid in graph.get("seals", {}):
+        stamp_human_form(graph["seals"][sid], submitted)
+    graph.setdefault("journal", []).append({
+        "op": "human_form", "gap": gap_id, "submitted": bool(submitted), "at": _now(),
+    })
+    refresh_effects(graph)
 
 def status(graph: dict[str, Any]) -> dict[str, Any]:
     open_gaps = [gid for gid, g in graph["gaps"].items() if g["status"] == "open"]

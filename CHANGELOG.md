@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.6 — 2026-09-19
+
+### Council seal APPLIED (kernel + harness scripts)
+- Coverage policy keys: `require_human_form`, `require_adopt_decision`, `require_primary_source`
+- `try_seal(..., adopt_decision=)`; `set_adopt` / `stamp_gap_human_form` / `mark_primary_source_missing`
+- CLI: `adopt`, `human-form`, `primary-source-missing`
+- Pack `packs/fleet.coverage/` + effect `effect.fleet.ops_ready`
+- Executable `scripts/harness/*.sh` (claim / github-qa / env / require-done / blocked-queue)
+- Recipes `recipes/harness-*.md`; tests `tests/test_coverage_council.py`
+- Docs: COUNCIL status → Applied v0.3.6; COVERAGE-POLICY points at scripts/harness
+
 ## 0.3.5 — 2026-09-19
 
 ### Council seal — fleet Coverage Gate

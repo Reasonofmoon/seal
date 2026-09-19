@@ -1,0 +1,19 @@
+{
+  "id": "gap.fleet.primary_source",
+  "ask": "PRIMARY_SOURCE_NOT_FOUND → code fail. No second-hand-only qualify.",
+  "risk": "product_foundation",
+  "schema": { "type": "object", "required": ["ok"] },
+  "requires": [],
+  "fillers": ["code", "human"],
+  "accept": [
+    {
+      "id": "primary_ok",
+      "type": "choice",
+      "instructions": {
+        "question": "Is a primary source present (not PRIMARY_SOURCE_NOT_FOUND)?"
+      },
+      "choice_in": ["pass"],
+      "confidence_gte": 0.55
+    }
+  ]
+}

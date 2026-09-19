@@ -1,5 +1,5 @@
 {
-  "seal_version": "0.3.0",
+  "seal_version": "0.3.6",
   "bands": {
     "read": {
       "heuristic_ok": true,
@@ -29,11 +29,15 @@
   "coverage": {
     "track": true,
     "effect_default": {
-      "require_no_open_escalations": true
+      "require_no_open_escalations": true,
+      "require_human_form": false,
+      "require_adopt_decision": false,
+      "require_primary_source": false
     },
     "notes": [
       "Developer reviews of Jev: accuracy without coverage is dishonest.",
-      "Deterministic code should seal via provider code:* when an if suffices."
+      "Deterministic code should seal via provider code:* when an if suffices.",
+      "Council 2026-09-19: require_human_form / require_adopt_decision / require_primary_source (v0.3.6)."
     ]
   }
 }

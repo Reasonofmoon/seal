@@ -28,6 +28,8 @@
 **SEAL** (Seal · Evidence · Atomic Lock) is a workflow kernel.  
 Generation can fill **Candidates**. Only a **Seal** advances the product. **Effects** (CONTEXT, codegen, deploy) stay locked until seals — and coverage — clear.
 
+**Fleet harness (v0.3.6):** run `scripts/harness/*.sh` from Herdr plans — never pane prompts ([COVERAGE-POLICY.md](docs/COVERAGE-POLICY.md)).
+
 > Jev answers questions.  
 > **SEAL answers whether the world may change — and refuses to hide the exception queue.**
 
