@@ -112,6 +112,35 @@ seal coverage --graph G
 
 ---
 
+
+<a id="worked-compare-jev"></a>
+
+## Worked compare: SEAL vs Jev (2026-09-19 KST)
+
+We ran the **same** BlogRich-like ship question through Jev mint and through SEAL.
+
+Full log: [`examples/compare-jev/COMPARE.md`](examples/compare-jev/COMPARE.md) · board: [`examples/compare-jev/run/board.html`](examples/compare-jev/run/board.html) (open via local `python3 -m http.server` — GitHub file view does not run the dashboard JS)
+
+<p align="center">
+  <img src="docs/assets/board-live-compare.png" alt="Live Gap Board — compare.jev ship locked" width="100%" />
+</p>
+
+| Observation | Jev-only | SEAL (real run) |
+|-------------|----------|-----------------|
+| Forbidden copy “명문대 합격 보장” | **BLOCK** noul=0.99 (jev-1.13.0) — stdout ends | Same mint via harness → **open escalate** on `gap.compare.claim` |
+| Clean copy | **PASS** noul=0.04 | Documented; **not** used to unlock ship |
+| Env `PATH`/`HOME` | Not a mint concern | Sealed `code` with `env-ready-done.md` |
+| Blocked approval / form | No durable queue | `human_form_pending` · adopt=`defer` · never auto-click |
+| Ship / READY | PASS mint ≠ permission to change the world | `effect.compare.ship` **locked** — `unsealed:['gap.compare.claim']` |
+
+**Coverage ledger:** seals=2 · code=1 · escalate=1 · auto_rate=0.5 · escalate_open=`claim` · human_form_pending=`human_approve`.
+
+**Falsifiable takeaway:** Jev judged the claim correctly; SEAL refused to ship while the exception queue was open. If the board ever shows ship `ready` while claim is still open, this claim is wrong — reopen the graph.
+
+**Dashboard check (2026-09-19):** Gap Board had a JS bug (`const esc` shadowed the escape helper) so cards did not paint; fixed in v0.3.9. Live verify on `:8877` — compare + demo-open boards render Next/gaps/coverage/locked effect + sticky CTA.
+
+---
+
 <a id="start-in-30-seconds"></a>
 
 ## Start in 30 seconds
