@@ -1,0 +1,21 @@
+{
+  "subject": {
+    "id": "autogen",
+    "repo": "microsoft/autogen",
+    "url": "https://github.com/microsoft/autogen",
+    "stars": 61058
+  },
+  "verdicts": {
+    "gap.audit.advance_gate": "fail",
+    "gap.audit.lock_locality": "fail",
+    "gap.audit.risk_band": "fail",
+    "gap.audit.durable_ssot": "fail",
+    "gap.audit.learning_honesty": "fail",
+    "gap.audit.serialization_runtime": "n/a"
+  },
+  "sealed": 6,
+  "failed": 0,
+  "effects": {
+    "effect.audit.emit_scorecard": "ready"
+  }
+}

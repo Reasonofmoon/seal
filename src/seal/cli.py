@@ -9,6 +9,8 @@ from seal.graph import open_product, save, load, add_candidate, project, compile
 from seal.vein import suggest_next, snapshot
 from seal.ukdl_subset import dump as ukdl_dump, parse as ukdl_parse, validate_text, UkdlSubsetError
 from seal.board import write_board, board_model
+from seal.coverage import ledger as coverage_ledger
+from seal.graph import mark_escalated, attach_evidence, attach_pack
 from seal.mint_heuristic import mint
 from seal.emit import emit_context_md, emit_aplus_passport, emit_codegen_stub
 
@@ -67,6 +69,14 @@ def main(argv: list[str] | None = None) -> int:
 
     bj = sub.add_parser("board-json", help="Gap Board model as JSON")
     bj.add_argument("--graph", type=Path, required=True)
+
+    cov = sub.add_parser("coverage", help="Coverage ledger (beyond Jev accuracy-only)")
+    cov.add_argument("--graph", type=Path, required=True)
+
+    esc = sub.add_parser("escalate", help="Mark gap for human exception queue")
+    esc.add_argument("--graph", type=Path, required=True)
+    esc.add_argument("--gap", required=True)
+    esc.add_argument("--reason", default="")
 
     args = p.parse_args(argv)
 
@@ -214,6 +224,16 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "board-json":
         print(json.dumps(board_model(g), ensure_ascii=False, indent=2))
+        return 0
+
+    if args.cmd == "coverage":
+        print(json.dumps(coverage_ledger(g), ensure_ascii=False, indent=2))
+        return 0
+
+    if args.cmd == "escalate":
+        mark_escalated(g, args.gap, args.reason)
+        save(g, args.graph)
+        print(json.dumps({"ok": True, "gap": args.gap, "coverage": coverage_ledger(g)}, ensure_ascii=False, indent=2))
         return 0
 
     return 2

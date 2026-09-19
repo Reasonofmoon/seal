@@ -1,5 +1,5 @@
 {
-  "seal_version": "0.1.0",
+  "seal_version": "0.3.0",
   "bands": {
     "read": {
       "heuristic_ok": true,
@@ -10,7 +10,8 @@
       "heuristic_ok": true,
       "human_coseal": false,
       "default_confidence_floor": 0.55,
-      "typesafe_preferred": true
+      "typesafe_preferred": true,
+      "deterministic_preferred": true
     },
     "user_trust": {
       "heuristic_ok": false,
@@ -24,5 +25,15 @@
       "default_confidence_floor": 0.85,
       "typesafe_required": true
     }
+  },
+  "coverage": {
+    "track": true,
+    "effect_default": {
+      "require_no_open_escalations": true
+    },
+    "notes": [
+      "Developer reviews of Jev: accuracy without coverage is dishonest.",
+      "Deterministic code should seal via provider code:* when an if suffices."
+    ]
   }
 }

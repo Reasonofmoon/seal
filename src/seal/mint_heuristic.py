@@ -65,6 +65,18 @@ def _noul(qid: str, proposal: str, idea: str, q: dict[str, Any]) -> float:
     if qid == "bans_specific":
         lines = [ln for ln in re.split(r"[\n,]", proposal) if ln.strip()]
         return 0.85 if len(lines) >= 3 else 0.4
+    if qid == "has_repo":
+        if re.search(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", proposal) or "github.com/" in pl:
+            return 0.92
+        return 0.2
+    if qid == "verdict_grounded":
+        if re.search(r"\b(pass|fail|n/a)\b", pl) and len(proposal) >= 80:
+            return 0.88
+        return 0.35
+    if qid in ("has_source", "has_three_modes", "honest_fallback", "autorun_or_button",
+               "reference_label", "not_official", "no_fake_certainty", "heuristic_fallback",
+               "bans_official_rank", "bans_guarantee", "clean_of_forbidden", "checklist_present"):
+        return 0.8 if len(proposal) >= 40 else 0.4
     # default soft mid
     return 0.55
 

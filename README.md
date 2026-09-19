@@ -7,9 +7,15 @@
 It is **not** another agent pipeline, not an executable knowledge document, and not “Jev with a UI.”  
 [Jev](https://typesafe.ai) is a decision mint. SEAL is the **graph that decides what those decisions are allowed to unlock**.
 
-[Why SEAL (falsifiable)](docs/WHY-SEAL.md) · [Manifesto](docs/SEAL-FRAMEWORK.md) · [Gap Board](docs/S8-GAP-BOARD.md)
+[Why SEAL](docs/WHY-SEAL.md) · [Beyond Jev](docs/BEYOND-JEV.md) · [Public cases](docs/CASES-PUBLIC.md) · [Manifesto](docs/SEAL-FRAMEWORK.md)
 
 ---
+
+## The door beyond Jev
+
+Developers praised Jev for typed, calibrated decisions — and warned that **schema-valid ≠ true**, that **accuracy without coverage** is dishonest, and that a mint is not a product brain. SEAL’s answer is the **Coverage Gate** + **advance gate**: see [docs/BEYOND-JEV.md](docs/BEYOND-JEV.md).
+
+Famous public repos scored as workflow classes: [examples/public-repos](examples/public-repos/).
 
 ## Differentiation in one screen
 

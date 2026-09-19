@@ -1,0 +1,11 @@
+{
+  "effect.publish.allow": {
+    "id": "effect.publish.allow",
+    "after": [
+      "gap.publish.copy.corpus",
+      "gap.publish.claim.forbidden_ban"
+    ],
+    "run": "emit_context_md",
+    "risk": "read"
+  }
+}

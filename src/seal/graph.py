@@ -8,6 +8,7 @@ from typing import Any
 from .hashutil import sha256_obj
 from .policy import band, provider_allowed
 from .vein import record_success, record_fail
+from .coverage import classify_path, ledger as coverage_ledger, meets_policy
 
 ROOT = Path(__file__).resolve().parents[2]
 PACKS = ROOT / "packs"
@@ -31,11 +32,12 @@ def load_pack(pack_id: str) -> dict[str, Any]:
 def open_product(product_id: str, idea: str, pack_id: str = "edtech.foundation", lang: str = "ko") -> dict[str, Any]:
     pack, gaps, effects = load_pack(pack_id)
     g = {
-        "seal_version": "0.1.0",
+        "seal_version": "0.3.0",
         "product": {
             "id": product_id,
             "idea": idea,
             "pack": pack_id,
+            "packs": [pack_id],
             "pack_version": pack["version"],
             "lang": lang,
             "created_at": _now(),
@@ -44,10 +46,56 @@ def open_product(product_id: str, idea: str, pack_id: str = "edtech.foundation",
         "candidates": {},
         "seals": {},
         "effects": effects,
+        "evidence": {},
         "journal": [{"op": "open", "pack": pack_id, "at": _now()}],
         "vein": {},
     }
     return g
+
+def attach_pack(graph: dict[str, Any], pack_id: str) -> dict[str, Any]:
+    """Compose another Gap Pack onto an open product (real products need multiple packs)."""
+    packs = graph["product"].setdefault("packs", [graph["product"]["pack"]])
+    if pack_id in packs:
+        return {"ok": False, "error": "pack_already_attached", "pack": pack_id}
+    pack, gaps, effects = load_pack(pack_id)
+    collisions = set(gaps) & set(graph["gaps"])
+    if collisions:
+        return {"ok": False, "error": "gap_id_collision", "gaps": sorted(collisions)}
+    graph["gaps"].update(gaps)
+    for eid, eff in effects.items():
+        if eid in graph["effects"]:
+            return {"ok": False, "error": "effect_id_collision", "effect": eid}
+        graph["effects"][eid] = eff
+    packs.append(pack_id)
+    graph["product"]["packs"] = packs
+    graph["journal"].append({"op": "attach_pack", "pack": pack_id, "at": _now()})
+    refresh_effects(graph)
+    return {"ok": True, "pack": pack_id, "gaps_added": list(gaps.keys())}
+
+def attach_evidence(
+    graph: dict[str, Any],
+    *,
+    kind: str,
+    ref: str,
+    note: str = "",
+    seal_id: str | None = None,
+    gap_id: str | None = None,
+) -> str:
+    """Record real-world evidence (URL, commit, deploy, screenshot path) on the graph."""
+    eid = f"evidence.{len(graph.setdefault('evidence', {}))+1:04d}"
+    graph["evidence"][eid] = {
+        "id": eid,
+        "kind": kind,
+        "ref": ref,
+        "note": note,
+        "seal": seal_id,
+        "gap": gap_id,
+        "at": _now(),
+    }
+    if seal_id and seal_id in graph.get("seals", {}):
+        graph["seals"][seal_id].setdefault("evidence", []).append(eid)
+    graph["journal"].append({"op": "evidence", "id": eid, "at": _now()})
+    return eid
 
 def save(graph: dict[str, Any], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -210,6 +258,13 @@ def try_seal(
         return {"ok": False, "error": "lock_failed", "failures": failures, "kind": "lock"}
 
     sid = f"seal.{len(graph['seals'])+1:04d}"
+    cand = graph["candidates"][candidate_id]
+    path = classify_path(
+        provider=provider,
+        answers=answers,
+        by=cand.get("by"),
+        escalated=bool(gap.get("escalated")),
+    )
     seal = {
         "id": sid,
         "gap": gap_id,
@@ -220,6 +275,7 @@ def try_seal(
         "policy_risk": gap["risk"],
         "state_hash": sha256_obj(state),
         "questions_hash": sha256_obj(questions),
+        "coverage": {"path": path},
         "at": _now(),
         "deprecated": False,
         "superseded_by": None,
@@ -250,4 +306,14 @@ def status(graph: dict[str, Any]) -> dict[str, Any]:
         "candidates": len(graph["candidates"]),
         "seals": len(graph["seals"]),
         "next": suggest_next(graph, limit=5),
+        "coverage": coverage_ledger(graph),
     }
+
+
+def mark_escalated(graph: dict[str, Any], gap_id: str, reason: str = "") -> None:
+    """Open exception-queue entry (developer demand: show coverage, not hide it)."""
+    if gap_id not in graph["gaps"]:
+        raise KeyError(gap_id)
+    graph["gaps"][gap_id]["escalated"] = True
+    graph["gaps"][gap_id]["escalate_reason"] = reason
+    graph.setdefault("journal", []).append({"op": "escalate", "gap": gap_id, "reason": reason, "at": _now()})

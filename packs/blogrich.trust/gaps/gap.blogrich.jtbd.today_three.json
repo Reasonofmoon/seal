@@ -1,0 +1,40 @@
+{
+  "id": "gap.blogrich.jtbd.today_three",
+  "ask": "블로리치가 네이버 블로그 창작자에게 고용되는 지속 가능한 일은?",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "string",
+    "minLength": 24
+  },
+  "requires": [],
+  "fillers": [
+    "human",
+    "import"
+  ],
+  "accept": [
+    {
+      "id": "outcome_framed",
+      "type": "choice",
+      "instructions": {
+        "question": "What form is proposal.value?",
+        "focus": "Pick one."
+      },
+      "criteria": {
+        "outcome_framed": "States progress the creator wants today",
+        "solution_framed": "Names stack/features to build",
+        "vague": "Too abstract"
+      },
+      "choice_in": [
+        "outcome_framed"
+      ]
+    },
+    {
+      "id": "supports_evidence",
+      "type": "noul",
+      "instructions": {
+        "question": "Does proposal.value name a durable job (today's next actions) rather than a feature list?"
+      },
+      "noul_gte": 0.7
+    }
+  ]
+}

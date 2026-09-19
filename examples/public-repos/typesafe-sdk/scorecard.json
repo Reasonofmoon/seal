@@ -1,0 +1,21 @@
+{
+  "subject": {
+    "id": "typesafe-sdk",
+    "repo": "typesafe-ai/typesafe-sdk-python",
+    "url": "https://github.com/typesafe-ai/typesafe-sdk-python",
+    "stars": 98
+  },
+  "verdicts": {
+    "gap.audit.advance_gate": "fail",
+    "gap.audit.lock_locality": "n/a",
+    "gap.audit.risk_band": "pass",
+    "gap.audit.durable_ssot": "fail",
+    "gap.audit.learning_honesty": "n/a",
+    "gap.audit.serialization_runtime": "pass"
+  },
+  "sealed": 6,
+  "failed": 0,
+  "effects": {
+    "effect.audit.emit_scorecard": "ready"
+  }
+}

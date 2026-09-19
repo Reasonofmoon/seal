@@ -66,3 +66,8 @@ Proof artifacts in-repo: `examples/readmaster-habit`, `examples/audit-conquest`,
 
 A clone of the Seal Graph reproduces what the product *is allowed to claim*.  
 A clone of a chat transcript or a PRD folder does not.
+
+
+## Beyond the mint (developer-driven)
+
+See [BEYOND-JEV.md](BEYOND-JEV.md). After listening to Jev launch discourse, SEAL adds a **Coverage Gate**: seals record `auto|escalate|human|code`, and effects can refuse unlock while escalations remain open. Accuracy dashboards that hide coverage fail this criterion by construction.

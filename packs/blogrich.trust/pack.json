@@ -1,0 +1,15 @@
+{
+  "id": "blogrich.trust",
+  "version": "0.1.0",
+  "title": "BlogRich trust & diagnose gaps",
+  "description": "Real BlogRich (https://blogrich.vercel.app/) product holes — LIVE honesty, next-action routing, non-claims.",
+  "lang": "ko",
+  "gaps": [
+    "gap.blogrich.jtbd.today_three",
+    "gap.blogrich.nonclaim.no_official_rank",
+    "gap.blogrich.dataplane.modes",
+    "gap.blogrich.diagnose.autorun",
+    "gap.blogrich.score.reference_not_official",
+    "gap.blogrich.next_action.calibrated_choice"
+  ]
+}

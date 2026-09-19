@@ -1,0 +1,38 @@
+{
+  "id": "gap.blogrich.score.reference_not_official",
+  "ask": "화면에 보이는 점수의 정체(참고치)와 금지 표현은?",
+  "risk": "user_trust",
+  "schema": {
+    "type": "object",
+    "required": [
+      "what_it_is",
+      "what_it_is_not",
+      "ui_label"
+    ]
+  },
+  "requires": [
+    "gap.blogrich.nonclaim.no_official_rank",
+    "gap.blogrich.diagnose.autorun"
+  ],
+  "fillers": [
+    "human"
+  ],
+  "accept": [
+    {
+      "id": "reference_label",
+      "type": "noul",
+      "instructions": {
+        "question": "Does proposal.value.ui_label communicate reference/heuristic score (참고치), not official Naver score?"
+      },
+      "noul_gte": 0.8
+    },
+    {
+      "id": "not_official",
+      "type": "noul",
+      "instructions": {
+        "question": "Does what_it_is_not clearly exclude official C-Rank / Search Advisor scores?"
+      },
+      "noul_gte": 0.75
+    }
+  ]
+}

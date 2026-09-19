@@ -1,0 +1,37 @@
+{
+  "id": "gap.publish.claim.forbidden_ban",
+  "ask": "이 카피에 금지 클레임(명문대 보장, Lexile 오용, Claude/EBS 허위 제휴, 근거 없는 순위)이 없는가?",
+  "risk": "user_trust",
+  "schema": {
+    "type": "object",
+    "required": [
+      "decision",
+      "forbidden_checked"
+    ]
+  },
+  "requires": [
+    "gap.publish.copy.corpus"
+  ],
+  "fillers": [
+    "human",
+    "import"
+  ],
+  "accept": [
+    {
+      "id": "clean_of_forbidden",
+      "type": "noul",
+      "instructions": {
+        "question": "Is decision PASS meaning the copy lacks forbidden prestige/partner/guarantee claims?"
+      },
+      "noul_gte": 0.75
+    },
+    {
+      "id": "checklist_present",
+      "type": "noul",
+      "instructions": {
+        "question": "Does forbidden_checked list the concrete ban categories that were reviewed?"
+      },
+      "noul_gte": 0.7
+    }
+  ]
+}

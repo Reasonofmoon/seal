@@ -1,0 +1,38 @@
+{
+  "id": "gap.blogrich.next_action.calibrated_choice",
+  "ask": "진단 후 Primary Next Action 라우팅 규칙(TypeSafe Choice + low-confidence honesty)은?",
+  "risk": "user_trust",
+  "schema": {
+    "type": "object",
+    "required": [
+      "with_key",
+      "without_key",
+      "low_confidence"
+    ]
+  },
+  "requires": [
+    "gap.blogrich.score.reference_not_official"
+  ],
+  "fillers": [
+    "human",
+    "import"
+  ],
+  "accept": [
+    {
+      "id": "no_fake_certainty",
+      "type": "noul",
+      "instructions": {
+        "question": "Does low_confidence policy forbid pretending certainty when confidence is low?"
+      },
+      "noul_gte": 0.8
+    },
+    {
+      "id": "heuristic_fallback",
+      "type": "noul",
+      "instructions": {
+        "question": "Does without_key describe deterministic heuristic with source labeled heuristic (not typesafe)?"
+      },
+      "noul_gte": 0.75
+    }
+  ]
+}

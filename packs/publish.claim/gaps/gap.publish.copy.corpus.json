@@ -1,0 +1,27 @@
+{
+  "id": "gap.publish.copy.corpus",
+  "ask": "발행 직전 마케팅 카피 코퍼스(텍스트)는 무엇인가?",
+  "risk": "read",
+  "schema": {
+    "type": "object",
+    "required": [
+      "source",
+      "excerpt"
+    ]
+  },
+  "requires": [],
+  "fillers": [
+    "human",
+    "import"
+  ],
+  "accept": [
+    {
+      "id": "has_source",
+      "type": "noul",
+      "instructions": {
+        "question": "Does proposal.value.name a concrete source path or URL for the copy?"
+      },
+      "noul_gte": 0.7
+    }
+  ]
+}

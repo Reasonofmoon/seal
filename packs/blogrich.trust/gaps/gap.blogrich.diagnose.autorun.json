@@ -1,0 +1,25 @@
+{
+  "id": "gap.blogrich.diagnose.autorun",
+  "ask": "진단 UX: LIVE 배지만으로 분석이 돌면 안 된다. 무엇을 봉인하는가?",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "string",
+    "minLength": 30
+  },
+  "requires": [
+    "gap.blogrich.dataplane.modes"
+  ],
+  "fillers": [
+    "human"
+  ],
+  "accept": [
+    {
+      "id": "autorun_or_button",
+      "type": "noul",
+      "instructions": {
+        "question": "Does proposal.value require page-load auto analysis and/or an explicit start button (not badge-alone)?"
+      },
+      "noul_gte": 0.75
+    }
+  ]
+}

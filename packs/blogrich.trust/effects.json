@@ -1,0 +1,15 @@
+{
+  "effect.blogrich.emit_trust_brief": {
+    "id": "effect.blogrich.emit_trust_brief",
+    "after": [
+      "gap.blogrich.jtbd.today_three",
+      "gap.blogrich.nonclaim.no_official_rank",
+      "gap.blogrich.dataplane.modes",
+      "gap.blogrich.diagnose.autorun",
+      "gap.blogrich.score.reference_not_official",
+      "gap.blogrich.next_action.calibrated_choice"
+    ],
+    "run": "emit_context_md",
+    "risk": "read"
+  }
+}

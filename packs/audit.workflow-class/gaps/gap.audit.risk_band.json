@@ -1,0 +1,37 @@
+{
+  "id": "gap.audit.risk_band",
+  "ask": "Can soft heuristics seal high-trust / irreversible claims without a calibrated mint policy?",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "object",
+    "required": [
+      "verdict",
+      "subject_repo",
+      "evidence_url",
+      "rationale"
+    ]
+  },
+  "requires": [],
+  "fillers": [
+    "human",
+    "import"
+  ],
+  "accept": [
+    {
+      "id": "has_repo",
+      "type": "noul",
+      "instructions": {
+        "question": "Does proposal.value.subject_repo name a real public GitHub owner/name?"
+      },
+      "noul_gte": 0.7
+    },
+    {
+      "id": "verdict_grounded",
+      "type": "noul",
+      "instructions": {
+        "question": "Is proposal.value.rationale grounded in how that stack advances work (not marketing fluff)?"
+      },
+      "noul_gte": 0.7
+    }
+  ]
+}

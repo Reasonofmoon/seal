@@ -1,0 +1,805 @@
+{
+  "seal_version": "0.2.0",
+  "product": {
+    "id": "case-vercel-ai",
+    "idea": "AI SDK for TypeScript — stream generation into apps; generation is the product surface.",
+    "pack": "audit.workflow-class",
+    "packs": [
+      "audit.workflow-class"
+    ],
+    "pack_version": "0.1.0",
+    "lang": "en",
+    "created_at": "2026-09-19T08:14:22+00:00"
+  },
+  "gaps": {
+    "gap.audit.advance_gate": {
+      "id": "gap.audit.advance_gate",
+      "ask": "Does the stack prevent generation/step success from advancing the product without an explicit sealed accept?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "verdict",
+          "subject_repo",
+          "evidence_url",
+          "rationale"
+        ]
+      },
+      "requires": [],
+      "fillers": [
+        "human",
+        "import"
+      ],
+      "accept": [
+        {
+          "id": "has_repo",
+          "type": "noul",
+          "instructions": {
+            "question": "Does proposal.value.subject_repo name a real public GitHub owner/name?"
+          },
+          "noul_gte": 0.7
+        },
+        {
+          "id": "verdict_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Is proposal.value.rationale grounded in how that stack advances work (not marketing fluff)?"
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "sealed",
+      "sealed_by": "seal.0001"
+    },
+    "gap.audit.lock_locality": {
+      "id": "gap.audit.lock_locality",
+      "ask": "Are accept locks co-located with claims, or deferred to a late audit/eval phase?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "verdict",
+          "subject_repo",
+          "evidence_url",
+          "rationale"
+        ]
+      },
+      "requires": [],
+      "fillers": [
+        "human",
+        "import"
+      ],
+      "accept": [
+        {
+          "id": "has_repo",
+          "type": "noul",
+          "instructions": {
+            "question": "Does proposal.value.subject_repo name a real public GitHub owner/name?"
+          },
+          "noul_gte": 0.7
+        },
+        {
+          "id": "verdict_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Is proposal.value.rationale grounded in how that stack advances work (not marketing fluff)?"
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "sealed",
+      "sealed_by": "seal.0002"
+    },
+    "gap.audit.risk_band": {
+      "id": "gap.audit.risk_band",
+      "ask": "Can soft heuristics seal high-trust / irreversible claims without a calibrated mint policy?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "verdict",
+          "subject_repo",
+          "evidence_url",
+          "rationale"
+        ]
+      },
+      "requires": [],
+      "fillers": [
+        "human",
+        "import"
+      ],
+      "accept": [
+        {
+          "id": "has_repo",
+          "type": "noul",
+          "instructions": {
+            "question": "Does proposal.value.subject_repo name a real public GitHub owner/name?"
+          },
+          "noul_gte": 0.7
+        },
+        {
+          "id": "verdict_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Is proposal.value.rationale grounded in how that stack advances work (not marketing fluff)?"
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "sealed",
+      "sealed_by": "seal.0003"
+    },
+    "gap.audit.durable_ssot": {
+      "id": "gap.audit.durable_ssot",
+      "ask": "Is product truth a diffable sealed graph (not only chat traces / drifting docs)?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "verdict",
+          "subject_repo",
+          "evidence_url",
+          "rationale"
+        ]
+      },
+      "requires": [],
+      "fillers": [
+        "human",
+        "import"
+      ],
+      "accept": [
+        {
+          "id": "has_repo",
+          "type": "noul",
+          "instructions": {
+            "question": "Does proposal.value.subject_repo name a real public GitHub owner/name?"
+          },
+          "noul_gte": 0.7
+        },
+        {
+          "id": "verdict_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Is proposal.value.rationale grounded in how that stack advances work (not marketing fluff)?"
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "sealed",
+      "sealed_by": "seal.0004"
+    },
+    "gap.audit.learning_honesty": {
+      "id": "gap.audit.learning_honesty",
+      "ask": "Do learning weights update on generative chains or only on sealed transitions?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "verdict",
+          "subject_repo",
+          "evidence_url",
+          "rationale"
+        ]
+      },
+      "requires": [],
+      "fillers": [
+        "human",
+        "import"
+      ],
+      "accept": [
+        {
+          "id": "has_repo",
+          "type": "noul",
+          "instructions": {
+            "question": "Does proposal.value.subject_repo name a real public GitHub owner/name?"
+          },
+          "noul_gte": 0.7
+        },
+        {
+          "id": "verdict_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Is proposal.value.rationale grounded in how that stack advances work (not marketing fluff)?"
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "sealed",
+      "sealed_by": "seal.0005"
+    },
+    "gap.audit.serialization_runtime": {
+      "id": "gap.audit.serialization_runtime",
+      "ask": "Can human-readable knowledge forms execute tools/pipelines as product advance?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "verdict",
+          "subject_repo",
+          "evidence_url",
+          "rationale"
+        ]
+      },
+      "requires": [],
+      "fillers": [
+        "human",
+        "import"
+      ],
+      "accept": [
+        {
+          "id": "has_repo",
+          "type": "noul",
+          "instructions": {
+            "question": "Does proposal.value.subject_repo name a real public GitHub owner/name?"
+          },
+          "noul_gte": 0.7
+        },
+        {
+          "id": "verdict_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Is proposal.value.rationale grounded in how that stack advances work (not marketing fluff)?"
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "sealed",
+      "sealed_by": "seal.0006"
+    }
+  },
+  "candidates": {
+    "candidate.0001": {
+      "id": "candidate.0001",
+      "gap": "gap.audit.advance_gate",
+      "value": {
+        "verdict": "fail",
+        "subject_repo": "vercel/ai",
+        "evidence_url": "https://github.com/vercel/ai",
+        "rationale": "SDK success is token/stream delivery into the app; no seal gate for product claims. Cited public repository: https://github.com/vercel/ai"
+      },
+      "by": "public-case",
+      "model": null,
+      "meta": {}
+    },
+    "candidate.0002": {
+      "id": "candidate.0002",
+      "gap": "gap.audit.lock_locality",
+      "value": {
+        "verdict": "fail",
+        "subject_repo": "vercel/ai",
+        "evidence_url": "https://github.com/vercel/ai",
+        "rationale": "App authors may add checks; the toolkit itself does not co-locate accept locks. Cited public repository: https://github.com/vercel/ai"
+      },
+      "by": "public-case",
+      "model": null,
+      "meta": {}
+    },
+    "candidate.0003": {
+      "id": "candidate.0003",
+      "gap": "gap.audit.risk_band",
+      "value": {
+        "verdict": "fail",
+        "subject_repo": "vercel/ai",
+        "evidence_url": "https://github.com/vercel/ai",
+        "rationale": "No built-in risk bands that refuse soft providers on trust claims. Cited public repository: https://github.com/vercel/ai"
+      },
+      "by": "public-case",
+      "model": null,
+      "meta": {}
+    },
+    "candidate.0004": {
+      "id": "candidate.0004",
+      "gap": "gap.audit.durable_ssot",
+      "value": {
+        "verdict": "fail",
+        "subject_repo": "vercel/ai",
+        "evidence_url": "https://github.com/vercel/ai",
+        "rationale": "Durable state is the app DB/UI, not a sealed claim graph. Cited public repository: https://github.com/vercel/ai"
+      },
+      "by": "public-case",
+      "model": null,
+      "meta": {}
+    },
+    "candidate.0005": {
+      "id": "candidate.0005",
+      "gap": "gap.audit.learning_honesty",
+      "value": {
+        "verdict": "n/a",
+        "subject_repo": "vercel/ai",
+        "evidence_url": "https://github.com/vercel/ai",
+        "rationale": "Not a learning-on-workflow engine; criterion not applicable as stated. Cited public repository: https://github.com/vercel/ai"
+      },
+      "by": "public-case",
+      "model": null,
+      "meta": {}
+    },
+    "candidate.0006": {
+      "id": "candidate.0006",
+      "gap": "gap.audit.serialization_runtime",
+      "value": {
+        "verdict": "n/a",
+        "subject_repo": "vercel/ai",
+        "evidence_url": "https://github.com/vercel/ai",
+        "rationale": "App toolkit, not knowledge-document runtime; criterion scoped out. Cited public repository: https://github.com/vercel/ai"
+      },
+      "by": "public-case",
+      "model": null,
+      "meta": {}
+    }
+  },
+  "seals": {
+    "seal.0001": {
+      "id": "seal.0001",
+      "gap": "gap.audit.advance_gate",
+      "candidate": "candidate.0001",
+      "strike_id": "strike.seal.0001",
+      "provider": "heuristic:v0",
+      "answers": {
+        "has_repo": {
+          "noul": 0.92
+        },
+        "verdict_grounded": {
+          "noul": 0.88
+        }
+      },
+      "policy_risk": "product_foundation",
+      "state_hash": "sha256:65591b84804de2582c6a760a949c80a80baaaf0034760fefa2928601fd3a3cab",
+      "questions_hash": "sha256:e45e055d95d472b0914c2e692d82d0e59e51706035b47efbd81d03534ba633fd",
+      "at": "2026-09-19T08:14:22+00:00",
+      "deprecated": false,
+      "superseded_by": null,
+      "evidence": [
+        "evidence.0002"
+      ]
+    },
+    "seal.0002": {
+      "id": "seal.0002",
+      "gap": "gap.audit.lock_locality",
+      "candidate": "candidate.0002",
+      "strike_id": "strike.seal.0002",
+      "provider": "heuristic:v0",
+      "answers": {
+        "has_repo": {
+          "noul": 0.92
+        },
+        "verdict_grounded": {
+          "noul": 0.88
+        }
+      },
+      "policy_risk": "product_foundation",
+      "state_hash": "sha256:9b3857354ab2f330f1ca46de9521db67328be43dcda0ea6b651031b2d2d3ff6a",
+      "questions_hash": "sha256:e45e055d95d472b0914c2e692d82d0e59e51706035b47efbd81d03534ba633fd",
+      "at": "2026-09-19T08:14:22+00:00",
+      "deprecated": false,
+      "superseded_by": null,
+      "evidence": [
+        "evidence.0003"
+      ]
+    },
+    "seal.0003": {
+      "id": "seal.0003",
+      "gap": "gap.audit.risk_band",
+      "candidate": "candidate.0003",
+      "strike_id": "strike.seal.0003",
+      "provider": "heuristic:v0",
+      "answers": {
+        "has_repo": {
+          "noul": 0.92
+        },
+        "verdict_grounded": {
+          "noul": 0.88
+        }
+      },
+      "policy_risk": "product_foundation",
+      "state_hash": "sha256:823228219f6fcc1a032d791553e07b432fc39a10e69bb936bcf2bdebaf41a5c2",
+      "questions_hash": "sha256:e45e055d95d472b0914c2e692d82d0e59e51706035b47efbd81d03534ba633fd",
+      "at": "2026-09-19T08:14:22+00:00",
+      "deprecated": false,
+      "superseded_by": null,
+      "evidence": [
+        "evidence.0004"
+      ]
+    },
+    "seal.0004": {
+      "id": "seal.0004",
+      "gap": "gap.audit.durable_ssot",
+      "candidate": "candidate.0004",
+      "strike_id": "strike.seal.0004",
+      "provider": "heuristic:v0",
+      "answers": {
+        "has_repo": {
+          "noul": 0.92
+        },
+        "verdict_grounded": {
+          "noul": 0.88
+        }
+      },
+      "policy_risk": "product_foundation",
+      "state_hash": "sha256:374442d0c5aed0e85e50061431adf31303e6166bf76274f273ea26be46cba5f5",
+      "questions_hash": "sha256:e45e055d95d472b0914c2e692d82d0e59e51706035b47efbd81d03534ba633fd",
+      "at": "2026-09-19T08:14:22+00:00",
+      "deprecated": false,
+      "superseded_by": null,
+      "evidence": [
+        "evidence.0005"
+      ]
+    },
+    "seal.0005": {
+      "id": "seal.0005",
+      "gap": "gap.audit.learning_honesty",
+      "candidate": "candidate.0005",
+      "strike_id": "strike.seal.0005",
+      "provider": "heuristic:v0",
+      "answers": {
+        "has_repo": {
+          "noul": 0.92
+        },
+        "verdict_grounded": {
+          "noul": 0.88
+        }
+      },
+      "policy_risk": "product_foundation",
+      "state_hash": "sha256:e9210448cc08bc3bf02d715df65c63b9a5834375ba28d01c0f12e32ffef234f8",
+      "questions_hash": "sha256:e45e055d95d472b0914c2e692d82d0e59e51706035b47efbd81d03534ba633fd",
+      "at": "2026-09-19T08:14:22+00:00",
+      "deprecated": false,
+      "superseded_by": null,
+      "evidence": [
+        "evidence.0006"
+      ]
+    },
+    "seal.0006": {
+      "id": "seal.0006",
+      "gap": "gap.audit.serialization_runtime",
+      "candidate": "candidate.0006",
+      "strike_id": "strike.seal.0006",
+      "provider": "heuristic:v0",
+      "answers": {
+        "has_repo": {
+          "noul": 0.92
+        },
+        "verdict_grounded": {
+          "noul": 0.88
+        }
+      },
+      "policy_risk": "product_foundation",
+      "state_hash": "sha256:4af33d745ec287986fe0a49474278daf5a6caff3dc28d579fbb5a783512f63d2",
+      "questions_hash": "sha256:e45e055d95d472b0914c2e692d82d0e59e51706035b47efbd81d03534ba633fd",
+      "at": "2026-09-19T08:14:22+00:00",
+      "deprecated": false,
+      "superseded_by": null,
+      "evidence": [
+        "evidence.0007"
+      ]
+    }
+  },
+  "effects": {
+    "effect.audit.emit_scorecard": {
+      "id": "effect.audit.emit_scorecard",
+      "after": [
+        "gap.audit.advance_gate",
+        "gap.audit.lock_locality",
+        "gap.audit.risk_band",
+        "gap.audit.durable_ssot",
+        "gap.audit.learning_honesty",
+        "gap.audit.serialization_runtime"
+      ],
+      "run": "emit_context_md",
+      "risk": "read",
+      "status": "ready"
+    }
+  },
+  "evidence": {
+    "evidence.0001": {
+      "id": "evidence.0001",
+      "kind": "github_repo",
+      "ref": "https://github.com/vercel/ai",
+      "note": "26837 stars public subject",
+      "seal": null,
+      "gap": null,
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    "evidence.0002": {
+      "id": "evidence.0002",
+      "kind": "criterion_seal",
+      "ref": "https://github.com/vercel/ai",
+      "note": "gap.audit.advance_gate=fail",
+      "seal": "seal.0001",
+      "gap": "gap.audit.advance_gate",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    "evidence.0003": {
+      "id": "evidence.0003",
+      "kind": "criterion_seal",
+      "ref": "https://github.com/vercel/ai",
+      "note": "gap.audit.lock_locality=fail",
+      "seal": "seal.0002",
+      "gap": "gap.audit.lock_locality",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    "evidence.0004": {
+      "id": "evidence.0004",
+      "kind": "criterion_seal",
+      "ref": "https://github.com/vercel/ai",
+      "note": "gap.audit.risk_band=fail",
+      "seal": "seal.0003",
+      "gap": "gap.audit.risk_band",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    "evidence.0005": {
+      "id": "evidence.0005",
+      "kind": "criterion_seal",
+      "ref": "https://github.com/vercel/ai",
+      "note": "gap.audit.durable_ssot=fail",
+      "seal": "seal.0004",
+      "gap": "gap.audit.durable_ssot",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    "evidence.0006": {
+      "id": "evidence.0006",
+      "kind": "criterion_seal",
+      "ref": "https://github.com/vercel/ai",
+      "note": "gap.audit.learning_honesty=n/a",
+      "seal": "seal.0005",
+      "gap": "gap.audit.learning_honesty",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    "evidence.0007": {
+      "id": "evidence.0007",
+      "kind": "criterion_seal",
+      "ref": "https://github.com/vercel/ai",
+      "note": "gap.audit.serialization_runtime=n/a",
+      "seal": "seal.0006",
+      "gap": "gap.audit.serialization_runtime",
+      "at": "2026-09-19T08:14:22+00:00"
+    }
+  },
+  "journal": [
+    {
+      "op": "open",
+      "pack": "audit.workflow-class",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0001",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0001",
+      "gap": "gap.audit.advance_gate",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "vein_success",
+      "gap": "gap.audit.advance_gate",
+      "edges": [
+        ":start=>gap.audit.advance_gate"
+      ]
+    },
+    {
+      "op": "seal",
+      "id": "seal.0001",
+      "gap": "gap.audit.advance_gate",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0002",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0002",
+      "gap": "gap.audit.lock_locality",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "vein_success",
+      "gap": "gap.audit.lock_locality",
+      "edges": [
+        "gap.audit.advance_gate=>gap.audit.lock_locality"
+      ]
+    },
+    {
+      "op": "seal",
+      "id": "seal.0002",
+      "gap": "gap.audit.lock_locality",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0003",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0003",
+      "gap": "gap.audit.risk_band",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "vein_success",
+      "gap": "gap.audit.risk_band",
+      "edges": [
+        "gap.audit.advance_gate=>gap.audit.risk_band",
+        "gap.audit.lock_locality=>gap.audit.risk_band"
+      ]
+    },
+    {
+      "op": "seal",
+      "id": "seal.0003",
+      "gap": "gap.audit.risk_band",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0004",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0004",
+      "gap": "gap.audit.durable_ssot",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "vein_success",
+      "gap": "gap.audit.durable_ssot",
+      "edges": [
+        "gap.audit.advance_gate=>gap.audit.durable_ssot",
+        "gap.audit.lock_locality=>gap.audit.durable_ssot",
+        "gap.audit.risk_band=>gap.audit.durable_ssot"
+      ]
+    },
+    {
+      "op": "seal",
+      "id": "seal.0004",
+      "gap": "gap.audit.durable_ssot",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0005",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0005",
+      "gap": "gap.audit.learning_honesty",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "vein_success",
+      "gap": "gap.audit.learning_honesty",
+      "edges": [
+        "gap.audit.advance_gate=>gap.audit.learning_honesty",
+        "gap.audit.lock_locality=>gap.audit.learning_honesty",
+        "gap.audit.risk_band=>gap.audit.learning_honesty",
+        "gap.audit.durable_ssot=>gap.audit.learning_honesty"
+      ]
+    },
+    {
+      "op": "seal",
+      "id": "seal.0005",
+      "gap": "gap.audit.learning_honesty",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0006",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0006",
+      "gap": "gap.audit.serialization_runtime",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "vein_success",
+      "gap": "gap.audit.serialization_runtime",
+      "edges": [
+        "gap.audit.advance_gate=>gap.audit.serialization_runtime",
+        "gap.audit.lock_locality=>gap.audit.serialization_runtime",
+        "gap.audit.risk_band=>gap.audit.serialization_runtime",
+        "gap.audit.durable_ssot=>gap.audit.serialization_runtime",
+        "gap.audit.learning_honesty=>gap.audit.serialization_runtime"
+      ]
+    },
+    {
+      "op": "seal",
+      "id": "seal.0006",
+      "gap": "gap.audit.serialization_runtime",
+      "at": "2026-09-19T08:14:22+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0007",
+      "at": "2026-09-19T08:14:22+00:00"
+    }
+  ],
+  "vein": {
+    ":start=>gap.audit.advance_gate": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.advance_gate=>gap.audit.lock_locality": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.advance_gate=>gap.audit.risk_band": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.lock_locality=>gap.audit.risk_band": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.advance_gate=>gap.audit.durable_ssot": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.lock_locality=>gap.audit.durable_ssot": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.risk_band=>gap.audit.durable_ssot": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.advance_gate=>gap.audit.learning_honesty": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.lock_locality=>gap.audit.learning_honesty": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.risk_band=>gap.audit.learning_honesty": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.durable_ssot=>gap.audit.learning_honesty": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.advance_gate=>gap.audit.serialization_runtime": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.lock_locality=>gap.audit.serialization_runtime": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.risk_band=>gap.audit.serialization_runtime": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.durable_ssot=>gap.audit.serialization_runtime": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.audit.learning_honesty=>gap.audit.serialization_runtime": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    }
+  }
+}

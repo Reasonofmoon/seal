@@ -1,0 +1,11 @@
+{
+  "id": "publish.claim",
+  "version": "0.1.0",
+  "title": "Publish claim gate (moonlang / ReadMaster)",
+  "description": "Pre-publish marketing copy must seal a forbidden-claim ban (Noul). From live moonlang.com gate.",
+  "lang": "ko",
+  "gaps": [
+    "gap.publish.copy.corpus",
+    "gap.publish.claim.forbidden_ban"
+  ]
+}

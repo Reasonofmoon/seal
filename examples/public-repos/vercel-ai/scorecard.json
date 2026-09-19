@@ -1,0 +1,21 @@
+{
+  "subject": {
+    "id": "vercel-ai",
+    "repo": "vercel/ai",
+    "url": "https://github.com/vercel/ai",
+    "stars": 26837
+  },
+  "verdicts": {
+    "gap.audit.advance_gate": "fail",
+    "gap.audit.lock_locality": "fail",
+    "gap.audit.risk_band": "fail",
+    "gap.audit.durable_ssot": "fail",
+    "gap.audit.learning_honesty": "n/a",
+    "gap.audit.serialization_runtime": "n/a"
+  },
+  "sealed": 6,
+  "failed": 0,
+  "effects": {
+    "effect.audit.emit_scorecard": "ready"
+  }
+}

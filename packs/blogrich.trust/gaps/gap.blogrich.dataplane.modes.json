@@ -1,0 +1,38 @@
+{
+  "id": "gap.blogrich.dataplane.modes",
+  "ask": "데이터 플레인 모드(mock|auto|live)와 키 없을 때 동작은?",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "object",
+    "required": [
+      "modes",
+      "default",
+      "fallback"
+    ]
+  },
+  "requires": [
+    "gap.blogrich.jtbd.today_three"
+  ],
+  "fillers": [
+    "human",
+    "import"
+  ],
+  "accept": [
+    {
+      "id": "has_three_modes",
+      "type": "noul",
+      "instructions": {
+        "question": "Does proposal.value.modes include mock, auto, and live?"
+      },
+      "noul_gte": 0.8
+    },
+    {
+      "id": "honest_fallback",
+      "type": "noul",
+      "instructions": {
+        "question": "Does fallback describe fixture/mock when keys missing (not fake LIVE)?"
+      },
+      "noul_gte": 0.75
+    }
+  ]
+}

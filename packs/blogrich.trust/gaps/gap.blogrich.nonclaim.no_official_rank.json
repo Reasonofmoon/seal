@@ -1,0 +1,36 @@
+{
+  "id": "gap.blogrich.nonclaim.no_official_rank",
+  "ask": "제품이 절대 주장하지 않을 공식성·보장 클레임은? (C-Rank, 서치어드바이저 원장, 순위 보장 등)",
+  "risk": "user_trust",
+  "schema": {
+    "type": "array",
+    "minItems": 3,
+    "items": {
+      "type": "string"
+    }
+  },
+  "requires": [
+    "gap.blogrich.jtbd.today_three"
+  ],
+  "fillers": [
+    "human"
+  ],
+  "accept": [
+    {
+      "id": "bans_official_rank",
+      "type": "noul",
+      "instructions": {
+        "question": "Does proposal.value explicitly ban claiming official Naver rank / C-Rank / Search Advisor ledger access?"
+      },
+      "noul_gte": 0.75
+    },
+    {
+      "id": "bans_guarantee",
+      "type": "noul",
+      "instructions": {
+        "question": "Does proposal.value ban guaranteeing traffic or ranking outcomes?"
+      },
+      "noul_gte": 0.7
+    }
+  ]
+}

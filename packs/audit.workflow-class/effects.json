@@ -1,0 +1,15 @@
+{
+  "effect.audit.emit_scorecard": {
+    "id": "effect.audit.emit_scorecard",
+    "after": [
+      "gap.audit.advance_gate",
+      "gap.audit.lock_locality",
+      "gap.audit.risk_band",
+      "gap.audit.durable_ssot",
+      "gap.audit.learning_honesty",
+      "gap.audit.serialization_runtime"
+    ],
+    "run": "emit_context_md",
+    "risk": "read"
+  }
+}
