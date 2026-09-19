@@ -128,6 +128,16 @@ pre {
   border-radius: 8px;
 }
 footer { color: var(--muted); font-size: 0.75rem; padding: 0 1.5rem 2rem; }
+.cta-bar {
+  position: sticky; bottom: 0; display: flex; gap: 0.75rem; flex-wrap: wrap;
+  align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.25rem; margin: 0 1.5rem 1rem;
+  background: rgba(18,24,33,0.95); border: 1px solid var(--accent);
+  border-radius: 12px; backdrop-filter: blur(8px);
+}
+.cta-bar strong { color: var(--accent); }
+.cta-bar code { font-size: 0.75rem; color: #cbd5e1; }
+
 </style>
 </head>
 <body>
@@ -165,6 +175,10 @@ footer { color: var(--muted); font-size: 0.75rem; padding: 0 1.5rem 2rem; }
     </details>
   </section>
 </main>
+<div class="cta-bar" id="cta">
+  <div><strong>Next action</strong> — seal the highlighted gap, then refresh coverage.</div>
+  <code id="cta-cmd">seal status --graph …</code>
+</div>
 <footer id="foot"></footer>
 <script>
 const BOARD = {"title": "SEAL Gap Board", "destroys": "app-factory studio module parade / ship tiers", "product": {"id": "readmaster-habit", "idea": "한국 어린이 영어 독서 습관 앱", "pack": "edtech.foundation", "pack_version": "0.1.0"}, "counts": {"open": 0, "blocked": 0, "sealed": 5, "candidates": 6, "seals": 5}, "next": [], "gaps": [{"id": "gap.edtech.constraints.non_negotiables", "ask": "절대 깨면 안 되는 제약 목록 (예: 아동 데이터, 오프라인, 한국어 UX, 예산)", "risk": "product_foundation", "status": "sealed", "requires": ["gap.edtech.persona.primary"], "sealed_by": "seal.0004", "missing": [], "vein_score": null, "recommended": false}, {"id": "gap.edtech.jtbd.core_job", "ask": "학습자가 이 앱을 ‘고용’하는 지속 가능한 일은 무엇인가? (솔루션 문장 금지)", "risk": "product_foundation", "status": "sealed", "requires": [], "sealed_by": "seal.0001", "missing": [], "vein_score": null, "recommended": false}, {"id": "gap.edtech.persona.primary", "ask": "일차 사용자(또는 구매 결정자)는 누구이며, 어떤 제약 속에 있는가?", "risk": "product_foundation", "status": "sealed", "requires": ["gap.edtech.jtbd.core_job"], "sealed_by": "seal.0002", "missing": [], "vein_score": null, "recommended": false}, {"id": "gap.edtech.vision.one_liner", "ask": "이 제품이 12개월 뒤에도 같은 문장으로 설명되는가? (한 줄)", "risk": "product_foundation", "status": "sealed", "requires": ["gap.edtech.jtbd.core_job", "gap.edtech.persona.primary"], "sealed_by": "seal.0003", "missing": [], "vein_score": null, "recommended": false}, {"id": "gap.edtech.ethics.dark_pattern_ban", "ask": "금지할 다크패턴·조작 UX를 명시하라 (출석 강요, 가짜 긴급, 보호자 우회 등)", "risk": "user_trust", "status": "sealed", "requires": ["gap.edtech.constraints.non_negotiables"], "sealed_by": "seal.0005", "missing": [], "vein_score": null, "recommended": false}], "effects": [{"id": "effect.emit_context", "status": "done", "run": "emit_context_md", "after": ["gap.edtech.jtbd.core_job", "gap.edtech.persona.primary", "gap.edtech.vision.one_liner", "gap.edtech.constraints.non_negotiables", "gap.edtech.ethics.dark_pattern_ban"], "after_effects": null, "risk": "read"}], "vein": {"edges": [], "count": 0, "destroys": "app-factory hebbian_engine on module prompts"}, "seal_version": "0.1.0", "coverage": {"counts": {"auto": 0, "escalate": 0, "human": 0, "code": 0, "unknown": 5}, "total_seals": 5, "auto_or_code": 0, "human": 0, "escalate_open": [], "auto_rate": 0.0, "destroys": "accuracy-without-coverage dashboards; mint-as-product", "seals": [{"id": "seal.0001", "gap": "gap.edtech.jtbd.core_job", "path": "unknown", "provider": "heuristic:v0"}, {"id": "seal.0002", "gap": "gap.edtech.persona.primary", "path": "unknown", "provider": "heuristic:v0"}, {"id": "seal.0003", "gap": "gap.edtech.vision.one_liner", "path": "unknown", "provider": "heuristic:v0"}, {"id": "seal.0004", "gap": "gap.edtech.constraints.non_negotiables", "path": "unknown", "provider": "heuristic:v0"}, {"id": "seal.0005", "gap": "gap.edtech.ethics.dark_pattern_ban", "path": "unknown", "provider": "typesafe:jev-1.13.0"}]}, "evidence": []};
@@ -225,6 +239,9 @@ document.getElementById('effects').innerHTML = (BOARD.effects || []).map(e =>
 ).join('') || '<div class="sub">No effects in this pack.</div>';
 document.getElementById('vein').textContent = JSON.stringify(BOARD.vein, null, 2);
 document.getElementById('ukdl').textContent = UKDL || '(ukdl not embedded)';
+const nxt = (BOARD.next && BOARD.next[0]) ? BOARD.next[0].gap : '(none open)';
+document.getElementById('cta-cmd').textContent =
+  'seal strike|seal-code — next: ' + nxt;
 document.getElementById('foot').textContent =
   'seal ' + (BOARD.seal_version || '') + ' · Gap Board S8 · JSON canonical remains source of truth';
 </script>

@@ -1,175 +1,175 @@
-# SEAL
+<p align="center">
+  <img src="docs/assets/seal-hero.png" alt="SEAL — No seal, no advance" width="100%" />
+</p>
 
-### No seal, no advance.
+<p align="center">
+  <a href="#start-in-30-seconds"><strong>▶ Start in 30 seconds</strong></a>
+  &nbsp;·&nbsp;
+  <a href="#see-the-board"><strong>See the Board</strong></a>
+  &nbsp;·&nbsp;
+  <a href="#why-this-wins"><strong>Why this wins</strong></a>
+  &nbsp;·&nbsp;
+  <a href="docs/BEYOND-JEV.md"><strong>Beyond Jev</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/Reasonofmoon/seal/tree/main/examples/public-repos"><strong>Public proof</strong></a>
+</p>
 
-**SEAL** (Seal · Evidence · Atomic Lock) is a workflow kernel for building products with AI: the product may only move forward when claims are **sealed** under explicit locks.
-
-It is **not** another agent pipeline, not an executable knowledge document, and not “Jev with a UI.”  
-[Jev](https://typesafe.ai) is a decision mint. SEAL is the **graph that decides what those decisions are allowed to unlock** — and it **shows the exception queue**.
-
-[Why SEAL](docs/WHY-SEAL.md) · [Beyond Jev](docs/BEYOND-JEV.md) · [Public cases](docs/CASES-PUBLIC.md) · [Coverage policy](docs/COVERAGE-POLICY.md) · [Manifesto](docs/SEAL-FRAMEWORK.md)
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-38bdf8?style=for-the-badge&labelColor=0b0f14" />
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-22c55e?style=for-the-badge&labelColor=0b0f14" />
+  <img alt="Invariant" src="https://img.shields.io/badge/invariant-no%20seal%20no%20advance-a78bfa?style=for-the-badge&labelColor=0b0f14" />
+  <img alt="Coverage" src="https://img.shields.io/badge/coverage%20gate-on-f59e0b?style=for-the-badge&labelColor=0b0f14" />
+</p>
 
 ---
 
-## Visual: Agent parade vs SEAL
+## The product brain is a sealed graph
 
-<p align="center">
-  <img src="docs/assets/seal-vs-parade.png" alt="Agent parade vs SEAL workflow kernel" width="100%" />
-</p>
+**SEAL** (Seal · Evidence · Atomic Lock) is a workflow kernel.  
+Generation can fill **Candidates**. Only a **Seal** advances the product. **Effects** (CONTEXT, codegen, deploy) stay locked until seals — and coverage — clear.
 
-**Left — Agent parade:** each `RUN STEP` succeeds and the “product” moves. Generation *is* progress.  
-**Right — SEAL:** `Gap → Candidate → Strike → Seal → Effect`. **No seal, no advance.** Effects stay locked until seals (and coverage policy) clear.
+> Jev answers questions.  
+> **SEAL answers whether the world may change — and refuses to hide the exception queue.**
 
 ---
 
-## Visual: Coverage Gate (beyond Jev)
+## Kernel (one invariant · five stages)
 
 <p align="center">
-  <img src="docs/assets/seal-coverage-gate.png" alt="Accuracy-only dashboard vs SEAL Coverage Ledger" width="100%" />
+  <img src="docs/assets/seal-kernel-loop.png" alt="Gap → Candidate → Strike → Seal → Effect" width="100%" />
 </p>
 
-Developers reviewing Jev warned that **accuracy without coverage is dishonest**. SEAL stamps every seal with `auto | code | human | escalate`, prints the ledger, and can **keep Effects locked** while escalations remain open.
+| You see | You do | Affordance |
+|---------|--------|------------|
+| **Gap** | Open a typed hole | `seal open` / `seal init` |
+| **Candidate** | Propose a fill | `seal fill` |
+| **Strike** | Judge under locks | `seal strike` or `seal seal-code` |
+| **Seal** | Append-only accept | stamped on the graph |
+| **Effect** | Unlock side effects | `seal effect` (blocked if escalations open) |
+
+---
+
+## See the Board
+
+<p align="center">
+  <img src="docs/assets/seal-gap-board-ui.png" alt="SEAL Gap Board UI — Next, Open, Blocked, Sealed, Coverage, Effects" width="100%" />
+</p>
+
+**Affordance map**
+
+| Surface | What it invites |
+|---------|-----------------|
+| **Next** (cyan) | Do this gap now — Vein × risk ranked |
+| **Open / Blocked / Sealed** | Status at a glance — no module parade |
+| **Coverage pills** | Auto · Code · Human · Escalate — nothing hidden |
+| **Effects** | Locked / Ready / Done — post-seal only |
+| **Open gap pack** | Primary CTA — start a product |
+
+Live HTML boards in-repo:  
+[`examples/demo-open/board.html`](examples/demo-open/board.html) · [`examples/readmaster-habit/board.html`](examples/readmaster-habit/board.html) · [`examples/public-repos/langchain/board.html`](examples/public-repos/langchain/board.html)
+
+```bash
+PYTHONPATH=src python3 src/seal/cli.py board --graph examples/readmaster-habit/graph.json --out /tmp/board.html
+open /tmp/board.html   # or xdg-open
+```
+
+---
+
+## Agent parade vs SEAL
+
+<p align="center">
+  <img src="docs/assets/seal-vs-parade.png" alt="Agent parade vs SEAL" width="100%" />
+</p>
+
+| | Agent / toolkit parade | **SEAL** |
+|--|------------------------|----------|
+| Unit of progress | Step ran / tokens streamed | **Seal recorded** |
+| Exception queue | Hidden in “94% accuracy” | **Coverage ledger** |
+| Deploy unlock | Hope + PR description | **Effect gate** |
+| Learning | Prompt Hebbian | **Vein on seals only** |
+
+---
+
+## Coverage Gate (beyond Jev)
+
+<p align="center">
+  <img src="docs/assets/seal-coverage-gate.png" alt="Accuracy-only vs Coverage Ledger" width="100%" />
+</p>
+
+Developers warned: **schema-valid ≠ true**, **accuracy without coverage is dishonest**, **mint ≠ product brain**.  
+SEAL stamps every seal `auto | code | human | escalate` and can keep Effects **locked** while escalations remain open.
 
 ```bash
 seal escalate --graph G --gap gap.… --reason "low confidence"
 seal coverage --graph G
-# Effect unlock requires coverage_policy (default: no open escalations)
 ```
 
----
-
-## Worked public example (famous repos)
-
-We score **other people’s** starred public repositories as workflow classes — not our private apps.
-
-| Subject | Hardest fail | Board |
-|---------|--------------|-------|
-| [langchain-ai/langchain](https://github.com/langchain-ai/langchain) (~147k★) | `advance_gate` | [case](examples/public-repos/langchain/) |
-| [crewAIInc/crewAI](https://github.com/crewAIInc/crewAI) (~59k★) | `advance_gate` | [case](examples/public-repos/crewai/) |
-| [microsoft/autogen](https://github.com/microsoft/autogen) (~61k★) | `durable_ssot` | [case](examples/public-repos/autogen/) |
-| [vercel/ai](https://github.com/vercel/ai) (~27k★) | `advance_gate` | [case](examples/public-repos/vercel-ai/) |
-| [typesafe-ai/typesafe-sdk-python](https://github.com/typesafe-ai/typesafe-sdk-python) | mint ≠ product brain | [case](examples/public-repos/typesafe-sdk/) |
-
-Open any `board.html` in those folders — Vein-ranked gaps, seals, coverage, effects. Method: pack `audit.workflow-class` · [CASES-PUBLIC.md](docs/CASES-PUBLIC.md).
-
-
-## The door beyond Jev
-
-Developers praised Jev for typed, calibrated decisions — and warned that **schema-valid ≠ true**, that **accuracy without coverage** is dishonest, and that a mint is not a product brain. SEAL’s answer is the **Coverage Gate** + **advance gate**: see [docs/BEYOND-JEV.md](docs/BEYOND-JEV.md).
-
-Famous public repos scored as workflow classes: [examples/public-repos](examples/public-repos/).
-
-## Differentiation in one screen
-
-| | Agent / module pipelines | Spec factories | UKDL L3–L5 | Jev / System One | **SEAL** |
-|--|--------------------------|----------------|------------|------------------|----------|
-| Unit of progress | Step ran | Doc written | Node executed | Decision returned | **Seal recorded** |
-| Late audit boss fight | Common | Common | N/A | N/A | **Destroyed** (locks on Gaps) |
-| Trust-band enforcement | Rare | Rare | N/A | Caller’s job | **Kernel policy** |
-| Durable product brain | Weak | Drifts | Living-doc myth | None | **Seal Graph** |
-| Learning signal | Token / prompt chains | — | — | — | **Sealed transitions only (Vein)** |
-| Human-readable form | Prompts | Markdown | Full UKDL | API JSON | **UKDL subset that cannot execute** |
-
-If generation alone advances your “product,” you do not have SEAL — you have a parade.
+→ [docs/BEYOND-JEV.md](docs/BEYOND-JEV.md) · [docs/COVERAGE-POLICY.md](docs/COVERAGE-POLICY.md)
 
 ---
 
+<a id="start-in-30-seconds"></a>
 
-## Practical: use it today
+## Start in 30 seconds
 
 ```bash
 git clone https://github.com/Reasonofmoon/seal.git && cd seal
-bash scripts/demo.sh          # open → seal-code → board + coverage
-PYTHONPATH=src python3 src/seal/cli.py init --dir .seal --id myapp --idea "…"
+bash scripts/demo.sh
 ```
 
-- **CI:** [[recipes/github-actions-seal-ci.yml](recipes/github-actions-seal-ci.yml) (copy to `.github/workflows/`)](.github/workflows/seal-ci.yml) runs unit tests + demo smoke  
-- **Merge gate recipe:** [`recipes/github-seal-check.md`](recipes/github-seal-check.md)  
-- **Coding agents:** [`AGENTS.md`](AGENTS.md) — no seal, no advance  
+**What you get:** open pack → `seal-code` on first gap → coverage ledger → Gap Board path printed.
 
-## Kernel loop
+| Intent | Command |
+|--------|---------|
+| Scaffold a product | `PYTHONPATH=src python3 src/seal/cli.py init --dir .seal --id myapp --idea "…"` |
+| See next hole | `… status --graph .seal/graph.json` |
+| Deterministic seal | `… seal-code --graph .seal/graph.json --gap … --ok` |
+| Render board | `… board --graph .seal/graph.json --out board.html` |
+| Merge/deploy gate | copy [recipes/github-seal-check.md](recipes/github-seal-check.md) |
+| CI template | copy [recipes/github-actions-seal-ci.yml](recipes/github-actions-seal-ci.yml) → `.github/workflows/` |
 
-```
-Gap → Candidate → Strike → Seal → Effect
-```
-
-1. **Gap** — typed hole; accept locks already attached  
-2. **Candidate** — proposed fill (human / import / generative)  
-3. **Strike** — atomic judgment batch (heuristic or TypeSafe/Jev)  
-4. **Seal** — append-only accept  
-5. **Effect** — CONTEXT, codegen, deploy… **only after** required seals  
-
-```bash
-seal open   --idea "…" --pack edtech.foundation
-seal fill   --gap … --text "…"
-seal strike --gap … --candidate … --provider heuristic|typesafe
-seal status          # open / blocked / sealed / next (Vein)
-seal effect --id …   # refused until seals unlock it
-seal board  --out board.html
-seal coverage --graph …
-seal escalate --gap … --reason "…"
-seal seal-code --gap … --ok
-seal attach-pack --pack blogrich.trust
-seal evidence --kind github_repo --ref https://github.com/…
-```
+Coding agents: read [AGENTS.md](AGENTS.md) first.
 
 ---
 
-## Quickstart
+<a id="why-this-wins"></a>
 
-```bash
-git clone https://github.com/Reasonofmoon/seal.git
-cd seal
-PYTHONPATH=src python3 -m unittest discover -s tests -v
+## Why this wins (falsifiable)
 
-# Open a pack and inspect the board
-PYTHONPATH=src python3 src/seal/cli.py open \
-  --id demo --idea "Korean kids English reading habit app" \
-  --pack edtech.foundation --out /tmp/demo.json
-PYTHONPATH=src python3 src/seal/cli.py board --graph /tmp/demo.json --out /tmp/board.html
-```
+| Criterion | Pipelines | Spec factories | Jev alone | **SEAL** |
+|-----------|-----------|----------------|-----------|----------|
+| Advance gate | ✗ | ✗ | ✗ | **✓** |
+| Lock locality | ✗ | late audit | n/a | **✓ on Gaps** |
+| Coverage visible | ✗ | ✗ | caller’s job | **✓ ledger** |
+| Durable SSOT | weak | drifts | none | **Seal Graph** |
+| Public counterexamples | — | — | — | **[scored](examples/public-repos/)** |
 
-`user_trust` / `irreversible` gaps **refuse heuristic**. For those strikes:
+Full argument: [docs/WHY-SEAL.md](docs/WHY-SEAL.md)
 
-```bash
-cp .env.example .env   # set TYPESAFE_API_KEY
-npm install            # optional: @typesafe-ai/sdk
-export TYPESAFE_API_KEY=…
-# optional: export NODE_PATH="$(pwd)/node_modules"
-```
+### Public proof (other people’s famous repos)
 
----
-
-## In-repo proofs
-
-| Example | Shows |
-|---------|--------|
-| [`examples/demo-open`](examples/demo-open) | Vein-ranked next Gap; blocked dependents |
-| [`examples/readmaster-habit`](examples/readmaster-habit) | Foundation 5/5 sealed + CONTEXT effect |
-| [`examples/audit-conquest`](examples/audit-conquest) | Weak AF spec fails rubric Gaps under locks |
-| [`examples/s5-implement-unlock`](examples/s5-implement-unlock) | Codegen locked until passport + context |
-
----
-
-## Status (S1–S8)
-
-Schema · Gap packs · Strike mint · TypeSafe on trust bands · audit-spec conquest · post-seal Effects · Vein · UKDL subset · Gap Board.  
-See [`docs/S0-S8-STATUS.md`](docs/S0-S8-STATUS.md).
+| Subject | Hardest fail | Open |
+|---------|--------------|------|
+| [langchain-ai/langchain](https://github.com/langchain-ai/langchain) | `advance_gate` | [case](examples/public-repos/langchain/) |
+| [crewAIInc/crewAI](https://github.com/crewAIInc/crewAI) | `advance_gate` | [case](examples/public-repos/crewai/) |
+| [microsoft/autogen](https://github.com/microsoft/autogen) | `durable_ssot` | [case](examples/public-repos/autogen/) |
+| [vercel/ai](https://github.com/vercel/ai) | `advance_gate` | [case](examples/public-repos/vercel-ai/) |
+| [typesafe-ai/typesafe-sdk-python](https://github.com/typesafe-ai/typesafe-sdk-python) | mint ≠ brain | [case](examples/public-repos/typesafe-sdk/) |
 
 ---
 
 ## Layout
 
 ```
-schemas/     seal-graph + lock-policy
-packs/       edtech.foundation · conquest.audit-spec
-src/seal/    kernel · vein · ukdl subset · board · cli
-examples/    sealed proofs + Gap Board HTML
-docs/        manifesto · why · phase notes
-tests/       22 unittest cases
+docs/assets/     hero · kernel · board UI · parade · coverage
+packs/           edtech · audit.workflow-class · blogrich · publish
+src/seal/        kernel · vein · coverage · board · cli
+examples/        sealed proofs + Gap Board HTML
+scripts/demo.sh  one command
+recipes/         CI + merge gate
 ```
 
-Python kernel: **zero runtime dependencies**. Node is optional and only for TypeSafe mint.
+Python kernel: **zero runtime deps**. Node optional for TypeSafe mint only.
 
 ---
 

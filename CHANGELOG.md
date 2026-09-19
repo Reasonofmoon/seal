@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.4 — 2026-09-19
+
+### README overwhelm pass
+- Hero, kernel loop, Gap Board UI mock, parade & coverage visuals
+- Affordance CTAs: Start / Board / Why / Public proof
+- Sticky next-action bar on Gap Board HTML
+
 ## 0.3.3 — 2026-09-19
 
 ### Practical adoption
