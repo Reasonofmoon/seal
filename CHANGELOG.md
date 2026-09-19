@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.2 — 2026-09-19
+
+### README visuals
+- `docs/assets/seal-vs-parade.png` — Agent parade vs SEAL kernel
+- `docs/assets/seal-coverage-gate.png` — Accuracy-only vs Coverage Ledger
+- Public-repo worked example table on README
+
 ## 0.3.1 — 2026-09-19
 
 ### Concrete Coverage Gate
