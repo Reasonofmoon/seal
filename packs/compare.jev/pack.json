@@ -1,0 +1,12 @@
+{
+  "id": "compare.jev",
+  "version": "0.3.8",
+  "title": "SEAL vs Jev worked comparison (BlogRich-like ship gate)",
+  "description": "Three fleet-realistic gaps: env code gate, claim/Jev judgment, human_form approval. Effect stays locked until coverage policy clears.",
+  "lang": "ko",
+  "gaps": [
+    "gap.compare.env_ready",
+    "gap.compare.claim",
+    "gap.compare.human_approve"
+  ]
+}

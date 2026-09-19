@@ -1,0 +1,5 @@
+runs/compare-jev-20260919/blocked-queue-done.md
+runs/compare-jev-20260919/claim-escalate.md
+runs/compare-jev-20260919/claim-seal-escalate.md
+runs/compare-jev-20260919/claim-seal-gate-stdout.json
+runs/compare-jev-20260919/env-ready-done.md

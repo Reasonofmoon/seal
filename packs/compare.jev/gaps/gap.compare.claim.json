@@ -1,0 +1,18 @@
+{
+  "id": "gap.compare.claim",
+  "ask": "Marketing HTML claim-gate (TypeSafe/Jev Noul). FAIL/API/BLOCK → escalate 「확인 실패」 — never silent PASS.",
+  "risk": "user_trust",
+  "schema": { "type": "object", "required": ["ok"] },
+  "requires": [],
+  "fillers": ["code", "human", "typesafe"],
+  "accept": [
+    {
+      "id": "claim_clean",
+      "type": "noul",
+      "instructions": {
+        "question": "Does this marketing copy contain forbidden education claims (합격 보장, false partnership)?"
+      },
+      "noul_lte": 0.35
+    }
+  ]
+}

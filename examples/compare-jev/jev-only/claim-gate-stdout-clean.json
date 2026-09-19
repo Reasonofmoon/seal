@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "path": "examples/compare-jev/fixtures/clean-claim.html",
+  "noul": 0.04,
+  "threshold": 0.35,
+  "decision": "PASS",
+  "model": "jev-1.13.0",
+  "source": "typesafe"
+}

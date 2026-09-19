@@ -1,0 +1,39 @@
+{
+  "counts": {
+    "auto": 0,
+    "escalate": 1,
+    "human": 0,
+    "code": 1,
+    "unknown": 0
+  },
+  "total_seals": 2,
+  "auto_or_code": 1,
+  "human": 0,
+  "escalate_open": [
+    "gap.compare.claim"
+  ],
+  "human_form_pending": [
+    "gap.compare.human_approve"
+  ],
+  "primary_source_failures": [],
+  "auto_rate": 0.5,
+  "destroys": "accuracy-without-coverage dashboards; mint-as-product",
+  "seals": [
+    {
+      "id": "seal.0001",
+      "gap": "gap.compare.env_ready",
+      "path": "code",
+      "provider": "code:env_ready_harness",
+      "adopt_decision": "adopt",
+      "human_form_submitted": false
+    },
+    {
+      "id": "seal.0002",
+      "gap": "gap.compare.human_approve",
+      "path": "escalate",
+      "provider": "code:agent_auto_click_forbidden",
+      "adopt_decision": "defer",
+      "human_form_submitted": false
+    }
+  ]
+}

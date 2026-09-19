@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "seal": {
+    "id": "seal.0002",
+    "gap": "gap.compare.human_approve",
+    "candidate": "candidate.0002",
+    "strike_id": "strike.seal.0002",
+    "provider": "code:agent_auto_click_forbidden",
+    "answers": {},
+    "policy_risk": "user_trust",
+    "state_hash": "sha256:666f0f5ea6613ef287e01755b09be9c6bf8842b10a124838d3b51c5d00f9949c",
+    "questions_hash": "sha256:2bb4fdc3503f6d480216d0972a5c132ee6df6237984d3fbea1aabec234e2f6b5",
+    "coverage": {
+      "path": "escalate",
+      "human_form_submitted": false
+    },
+    "at": "2026-09-19T08:45:03+00:00",
+    "deprecated": false,
+    "superseded_by": null
+  },
+  "suggest": "escalate",
+  "note": "human_form_required but human_form_submitted=false; effect stays locked under require_human_form"
+}

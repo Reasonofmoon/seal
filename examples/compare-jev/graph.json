@@ -1,0 +1,343 @@
+{
+  "seal_version": "0.3.0",
+  "product": {
+    "id": "compare.jev.20260919",
+    "idea": "Can we READY BlogRich-like deploy and publish marketing HTML without hiding exceptions?",
+    "pack": "compare.jev",
+    "packs": [
+      "compare.jev"
+    ],
+    "pack_version": "0.3.8",
+    "lang": "ko",
+    "created_at": "2026-09-19T08:44:48+00:00"
+  },
+  "gaps": {
+    "gap.compare.env_ready": {
+      "id": "gap.compare.env_ready",
+      "ask": "Deploy/env: PATH and HOME present+nonempty before BlogRich-like READY (code-only harness).",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "ok"
+        ]
+      },
+      "requires": [],
+      "fillers": [
+        "code",
+        "human"
+      ],
+      "accept": [
+        {
+          "id": "predicate_ok",
+          "type": "choice",
+          "instructions": {
+            "question": "Does harness env-ready-done.md prove required env names are set?"
+          },
+          "choice_in": [
+            "pass"
+          ],
+          "confidence_gte": 0.55
+        }
+      ],
+      "status": "sealed",
+      "sealed_by": "seal.0001"
+    },
+    "gap.compare.claim": {
+      "id": "gap.compare.claim",
+      "ask": "Marketing HTML claim-gate (TypeSafe/Jev Noul). FAIL/API/BLOCK → escalate 「확인 실패」 — never silent PASS.",
+      "risk": "user_trust",
+      "schema": {
+        "type": "object",
+        "required": [
+          "ok"
+        ]
+      },
+      "requires": [],
+      "fillers": [
+        "code",
+        "human",
+        "typesafe"
+      ],
+      "accept": [
+        {
+          "id": "claim_clean",
+          "type": "noul",
+          "instructions": {
+            "question": "Does this marketing copy contain forbidden education claims (합격 보장, false partnership)?"
+          },
+          "noul_lte": 0.35
+        }
+      ],
+      "status": "open",
+      "sealed_by": null,
+      "escalated": true,
+      "escalate_reason": "claim-gate BLOCK noul=0.99 on bad-claim.html (명문대 합격 보장); harness wrote claim-seal-escalate.md — 「확인 실패」"
+    },
+    "gap.compare.human_approve": {
+      "id": "gap.compare.human_approve",
+      "ask": "Human form / subscribe / blocked approval queue — agent auto ≠ success; human_form_required.",
+      "risk": "user_trust",
+      "human_form_required": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "ok"
+        ]
+      },
+      "requires": [],
+      "fillers": [
+        "human",
+        "code"
+      ],
+      "accept": [
+        {
+          "id": "form_submitted",
+          "type": "choice",
+          "instructions": {
+            "question": "Was the human approval/subscribe form actually submitted (not agent-simulated)?"
+          },
+          "choice_in": [
+            "pass"
+          ],
+          "confidence_gte": 0.7
+        }
+      ],
+      "status": "sealed",
+      "sealed_by": "seal.0002",
+      "human_form_submitted": false,
+      "escalated": true,
+      "escalate_reason": "human_form_required but not submitted"
+    }
+  },
+  "candidates": {
+    "candidate.0001": {
+      "id": "candidate.0001",
+      "gap": "gap.compare.env_ready",
+      "value": {
+        "ok": true,
+        "predicate": "code:env_ready_harness"
+      },
+      "by": "code",
+      "model": null,
+      "meta": {}
+    },
+    "candidate.0002": {
+      "id": "candidate.0002",
+      "gap": "gap.compare.human_approve",
+      "value": {
+        "ok": true,
+        "predicate": "code:agent_auto_click_forbidden"
+      },
+      "by": "code",
+      "model": null,
+      "meta": {}
+    }
+  },
+  "seals": {
+    "seal.0001": {
+      "id": "seal.0001",
+      "gap": "gap.compare.env_ready",
+      "candidate": "candidate.0001",
+      "strike_id": "strike.seal.0001",
+      "provider": "code:env_ready_harness",
+      "answers": {},
+      "policy_risk": "product_foundation",
+      "state_hash": "sha256:2963d14792e5af99165f060f54b5a591c5a762a53a002380791543b80a835056",
+      "questions_hash": "sha256:f173735c38c836b8b06ad49e199e132297505777d0e7c481c33bde982658e757",
+      "coverage": {
+        "path": "code",
+        "human_form_submitted": false
+      },
+      "at": "2026-09-19T08:44:48+00:00",
+      "deprecated": false,
+      "superseded_by": null,
+      "adopt_decision": "adopt"
+    },
+    "seal.0002": {
+      "id": "seal.0002",
+      "gap": "gap.compare.human_approve",
+      "candidate": "candidate.0002",
+      "strike_id": "strike.seal.0002",
+      "provider": "code:agent_auto_click_forbidden",
+      "answers": {},
+      "policy_risk": "user_trust",
+      "state_hash": "sha256:666f0f5ea6613ef287e01755b09be9c6bf8842b10a124838d3b51c5d00f9949c",
+      "questions_hash": "sha256:2bb4fdc3503f6d480216d0972a5c132ee6df6237984d3fbea1aabec234e2f6b5",
+      "coverage": {
+        "path": "escalate",
+        "human_form_submitted": false
+      },
+      "at": "2026-09-19T08:45:03+00:00",
+      "deprecated": false,
+      "superseded_by": null,
+      "adopt_decision": "defer"
+    }
+  },
+  "effects": {
+    "effect.compare.ship": {
+      "id": "effect.compare.ship",
+      "after": [
+        "gap.compare.env_ready",
+        "gap.compare.claim",
+        "gap.compare.human_approve"
+      ],
+      "run": "emit_context_md",
+      "risk": "irreversible",
+      "coverage_policy": {
+        "require_no_open_escalations": true,
+        "require_human_form": true,
+        "require_adopt_decision": true
+      },
+      "status": "locked",
+      "lock_reason": [
+        "unsealed:['gap.compare.claim']"
+      ]
+    }
+  },
+  "evidence": {
+    "evidence.0001": {
+      "id": "evidence.0001",
+      "kind": "harness_done",
+      "ref": "runs/compare-jev-20260919/env-ready-done.md",
+      "note": "PATH HOME nonempty",
+      "seal": null,
+      "gap": "gap.compare.env_ready",
+      "at": "2026-09-19T08:44:48+00:00"
+    },
+    "evidence.0002": {
+      "id": "evidence.0002",
+      "kind": "harness_escalate",
+      "ref": "runs/compare-jev-20260919/claim-seal-escalate.md",
+      "note": "Jev BLOCK decision; SEAL does not seal claim; ship stays locked",
+      "seal": null,
+      "gap": "gap.compare.claim",
+      "at": "2026-09-19T08:45:03+00:00"
+    },
+    "evidence.0003": {
+      "id": "evidence.0003",
+      "kind": "jev_mint",
+      "ref": "examples/compare-jev/jev-only/claim-gate-stdout-bad.json",
+      "note": "decision=BLOCK noul=0.99 model=jev-1.13.0",
+      "seal": null,
+      "gap": "gap.compare.claim",
+      "at": "2026-09-19T08:45:03+00:00"
+    },
+    "evidence.0004": {
+      "id": "evidence.0004",
+      "kind": "harness_done",
+      "ref": "runs/compare-jev-20260919/blocked-queue-done.md",
+      "note": "queue-only invariant; never auto-approve",
+      "seal": null,
+      "gap": "gap.compare.human_approve",
+      "at": "2026-09-19T08:45:03+00:00"
+    }
+  },
+  "journal": [
+    {
+      "op": "open",
+      "pack": "compare.jev",
+      "at": "2026-09-19T08:44:48+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0001",
+      "gap": "gap.compare.env_ready",
+      "at": "2026-09-19T08:44:48+00:00"
+    },
+    {
+      "op": "vein_success",
+      "gap": "gap.compare.env_ready",
+      "edges": [
+        ":start=>gap.compare.env_ready"
+      ]
+    },
+    {
+      "op": "seal",
+      "id": "seal.0001",
+      "gap": "gap.compare.env_ready",
+      "at": "2026-09-19T08:44:48+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0001",
+      "at": "2026-09-19T08:44:48+00:00"
+    },
+    {
+      "op": "adopt",
+      "seal": "seal.0001",
+      "decision": "adopt",
+      "at": "2026-09-19T08:44:48+00:00"
+    },
+    {
+      "op": "escalate",
+      "gap": "gap.compare.claim",
+      "reason": "claim-gate BLOCK noul=0.99 on bad-claim.html (명문대 합격 보장); harness wrote claim-seal-escalate.md — 「확인 실패」",
+      "at": "2026-09-19T08:45:03+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0002",
+      "at": "2026-09-19T08:45:03+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0003",
+      "at": "2026-09-19T08:45:03+00:00"
+    },
+    {
+      "op": "human_form",
+      "gap": "gap.compare.human_approve",
+      "submitted": false,
+      "at": "2026-09-19T08:45:03+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0002",
+      "gap": "gap.compare.human_approve",
+      "at": "2026-09-19T08:45:03+00:00"
+    },
+    {
+      "op": "escalate",
+      "gap": "gap.compare.human_approve",
+      "reason": "human_form_required but not submitted",
+      "at": "2026-09-19T08:45:03+00:00"
+    },
+    {
+      "op": "vein_success",
+      "gap": "gap.compare.human_approve",
+      "edges": [
+        "gap.compare.env_ready=>gap.compare.human_approve"
+      ]
+    },
+    {
+      "op": "seal",
+      "id": "seal.0002",
+      "gap": "gap.compare.human_approve",
+      "at": "2026-09-19T08:45:03+00:00"
+    },
+    {
+      "op": "adopt",
+      "seal": "seal.0002",
+      "decision": "defer",
+      "at": "2026-09-19T08:45:03+00:00"
+    },
+    {
+      "op": "evidence",
+      "id": "evidence.0004",
+      "at": "2026-09-19T08:45:03+00:00"
+    }
+  ],
+  "vein": {
+    ":start=>gap.compare.env_ready": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    },
+    "gap.compare.env_ready=>gap.compare.human_approve": {
+      "weight": 0.625,
+      "success": 1,
+      "fail": 0
+    }
+  }
+}

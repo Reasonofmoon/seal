@@ -1,0 +1,9 @@
+{
+  "ok": false,
+  "path": "examples/compare-jev/fixtures/bad-claim.html",
+  "noul": 0.99,
+  "threshold": 0.35,
+  "decision": "BLOCK",
+  "model": "jev-1.13.0",
+  "source": "typesafe"
+}

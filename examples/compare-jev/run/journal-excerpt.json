@@ -1,0 +1,95 @@
+[
+  {
+    "op": "open",
+    "pack": "compare.jev",
+    "at": "2026-09-19T08:44:48+00:00"
+  },
+  {
+    "op": "candidate",
+    "id": "candidate.0001",
+    "gap": "gap.compare.env_ready",
+    "at": "2026-09-19T08:44:48+00:00"
+  },
+  {
+    "op": "vein_success",
+    "gap": "gap.compare.env_ready",
+    "edges": [
+      ":start=>gap.compare.env_ready"
+    ]
+  },
+  {
+    "op": "seal",
+    "id": "seal.0001",
+    "gap": "gap.compare.env_ready",
+    "at": "2026-09-19T08:44:48+00:00"
+  },
+  {
+    "op": "evidence",
+    "id": "evidence.0001",
+    "at": "2026-09-19T08:44:48+00:00"
+  },
+  {
+    "op": "adopt",
+    "seal": "seal.0001",
+    "decision": "adopt",
+    "at": "2026-09-19T08:44:48+00:00"
+  },
+  {
+    "op": "escalate",
+    "gap": "gap.compare.claim",
+    "reason": "claim-gate BLOCK noul=0.99 on bad-claim.html (명문대 합격 보장); harness wrote claim-seal-escalate.md — 「확인 실패」",
+    "at": "2026-09-19T08:45:03+00:00"
+  },
+  {
+    "op": "evidence",
+    "id": "evidence.0002",
+    "at": "2026-09-19T08:45:03+00:00"
+  },
+  {
+    "op": "evidence",
+    "id": "evidence.0003",
+    "at": "2026-09-19T08:45:03+00:00"
+  },
+  {
+    "op": "human_form",
+    "gap": "gap.compare.human_approve",
+    "submitted": false,
+    "at": "2026-09-19T08:45:03+00:00"
+  },
+  {
+    "op": "candidate",
+    "id": "candidate.0002",
+    "gap": "gap.compare.human_approve",
+    "at": "2026-09-19T08:45:03+00:00"
+  },
+  {
+    "op": "escalate",
+    "gap": "gap.compare.human_approve",
+    "reason": "human_form_required but not submitted",
+    "at": "2026-09-19T08:45:03+00:00"
+  },
+  {
+    "op": "vein_success",
+    "gap": "gap.compare.human_approve",
+    "edges": [
+      "gap.compare.env_ready=>gap.compare.human_approve"
+    ]
+  },
+  {
+    "op": "seal",
+    "id": "seal.0002",
+    "gap": "gap.compare.human_approve",
+    "at": "2026-09-19T08:45:03+00:00"
+  },
+  {
+    "op": "adopt",
+    "seal": "seal.0002",
+    "decision": "defer",
+    "at": "2026-09-19T08:45:03+00:00"
+  },
+  {
+    "op": "evidence",
+    "id": "evidence.0004",
+    "at": "2026-09-19T08:45:03+00:00"
+  }
+]

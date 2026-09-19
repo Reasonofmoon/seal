@@ -1,0 +1,17 @@
+{
+  "effect.compare.ship": {
+    "id": "effect.compare.ship",
+    "after": [
+      "gap.compare.env_ready",
+      "gap.compare.claim",
+      "gap.compare.human_approve"
+    ],
+    "run": "emit_context_md",
+    "risk": "irreversible",
+    "coverage_policy": {
+      "require_no_open_escalations": true,
+      "require_human_form": true,
+      "require_adopt_decision": true
+    }
+  }
+}

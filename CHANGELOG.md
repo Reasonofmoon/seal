@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.8 — 2026-09-19
+
+### Worked compare-jev log
+- Pack `packs/compare.jev/` — three gaps + `effect.compare.ship` (env code / claim escalate / human_form)
+- Real run under `examples/compare-jev/` + harness `runs/compare-jev-20260919/`
+- COMPARE.md · JEV-ONLY.md · board.html · seal-status.json (effect left **locked**)
+- TypeSafe claim-gate executed: bad BLOCK noul=0.99, clean PASS noul=0.04
+
 ## 0.3.7 — 2026-09-19
 
 ### Operator call-site wiring (templates + runbook)

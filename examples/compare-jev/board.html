@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SEAL Gap Board</title>
+<style>
+:root {
+  --bg: #0b0f14;
+  --panel: #121821;
+  --line: #243041;
+  --text: #e7eef8;
+  --muted: #8b9bb0;
+  --accent: #38bdf8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: radial-gradient(1200px 600px at 10% -10%, #132033 0%, var(--bg) 55%);
+  color: var(--text);
+  min-height: 100vh;
+}
+header {
+  padding: 1.25rem 1.5rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+h1 { margin: 0; font-size: 1.25rem; letter-spacing: 0.02em; }
+.sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.35rem; max-width: 52rem; }
+.pillrow { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pill {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+}
+.pill strong { color: var(--text); font-weight: 600; }
+main { padding: 1.25rem 1.5rem 3rem; display: grid; gap: 1.25rem; }
+section h2 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.card.recommended {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(56,189,248,0.25);
+}
+.card.sealed { opacity: 0.85; }
+.badge {
+  display: inline-flex;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+}
+.badge.open { background: rgba(59,130,246,0.15); color: #93c5fd; }
+.badge.blocked { background: rgba(245,158,11,0.15); color: #fcd34d; }
+.badge.sealed { background: rgba(34,197,94,0.15); color: #86efac; }
+.badge.locked { background: rgba(100,116,139,0.2); color: #cbd5e1; }
+.badge.ready { background: rgba(167,139,250,0.18); color: #ddd6fe; }
+.badge.done { background: rgba(34,197,94,0.15); color: #86efac; }
+.ask { font-size: 0.95rem; line-height: 1.45; }
+.meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  word-break: break-all;
+}
+.risk { font-size: 0.72rem; color: var(--muted); }
+.risk.user_trust, .risk.irreversible { color: #fca5a5; }
+.rec { font-size: 0.7rem; color: var(--accent); font-weight: 600; }
+.effects { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.effect {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+  min-width: 180px;
+}
+.banner {
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  background: rgba(18,24,33,0.6);
+}
+.banner em { color: var(--text); font-style: normal; }
+details {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  padding: 0.5rem 0.75rem;
+}
+details summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
+pre {
+  overflow: auto;
+  max-height: 320px;
+  font-size: 0.72rem;
+  color: #cbd5e1;
+  background: #0a0e13;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+footer { color: var(--muted); font-size: 0.75rem; padding: 0 1.5rem 2rem; }
+.cta-bar {
+  position: sticky; bottom: 0; display: flex; gap: 0.75rem; flex-wrap: wrap;
+  align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.25rem; margin: 0 1.5rem 1rem;
+  background: rgba(18,24,33,0.95); border: 1px solid var(--accent);
+  border-radius: 12px; backdrop-filter: blur(8px);
+}
+.cta-bar strong { color: var(--accent); }
+.cta-bar code { font-size: 0.75rem; color: #cbd5e1; }
+
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1 id="title">SEAL Gap Board</h1>
+    <div class="sub" id="idea"></div>
+  </div>
+  <div class="pillrow" id="pills"></div>
+</header>
+<main>
+  <div class="banner" id="banner"></div>
+  <section>
+    <h2>Next (Vein × open)</h2>
+    <div class="grid" id="next"></div>
+  </section>
+  <section>
+    <h2>Gaps</h2>
+    <div class="grid" id="gaps"></div>
+  </section>
+  <section>
+    <h2>Coverage ledger (beyond accuracy-only)</h2>
+    <div class="pillrow" id="coverage"></div>
+    <div class="sub" id="escalate" style="margin-top:0.5rem"></div>
+  </section>
+  <section>
+    <h2>Effects (post-seal only)</h2>
+    <div class="effects" id="effects"></div>
+  </section>
+  <section>
+    <details>
+      <summary>Vein edges · UKDL subset dump</summary>
+      <pre id="vein"></pre>
+      <pre id="ukdl"></pre>
+    </details>
+  </section>
+</main>
+<div class="cta-bar" id="cta">
+  <div><strong>Next action</strong> — seal the highlighted gap, then refresh coverage.</div>
+  <code id="cta-cmd">seal status --graph …</code>
+</div>
+<footer id="foot"></footer>
+<script>
+const BOARD = {"title": "SEAL Gap Board", "destroys": "app-factory studio module parade / ship tiers", "product": {"id": "compare.jev.20260919", "idea": "Can we READY BlogRich-like deploy and publish marketing HTML without hiding exceptions?", "pack": "compare.jev", "pack_version": "0.3.8"}, "counts": {"open": 1, "blocked": 0, "sealed": 2, "candidates": 2, "seals": 2}, "next": [{"gap": "gap.compare.claim", "score": 0.1, "ask": "Marketing HTML claim-gate (TypeSafe/Jev Noul). FAIL/API/BLOCK → escalate 「확인 실패」 — never silent PASS.", "risk": "user_trust"}], "gaps": [{"id": "gap.compare.claim", "ask": "Marketing HTML claim-gate (TypeSafe/Jev Noul). FAIL/API/BLOCK → escalate 「확인 실패」 — never silent PASS.", "risk": "user_trust", "status": "open", "requires": [], "sealed_by": null, "missing": [], "vein_score": 0.1, "recommended": true}, {"id": "gap.compare.env_ready", "ask": "Deploy/env: PATH and HOME present+nonempty before BlogRich-like READY (code-only harness).", "risk": "product_foundation", "status": "sealed", "requires": [], "sealed_by": "seal.0001", "missing": [], "vein_score": null, "recommended": false}, {"id": "gap.compare.human_approve", "ask": "Human form / subscribe / blocked approval queue — agent auto ≠ success; human_form_required.", "risk": "user_trust", "status": "sealed", "requires": [], "sealed_by": "seal.0002", "missing": [], "vein_score": null, "recommended": false}], "effects": [{"id": "effect.compare.ship", "status": "locked", "run": "emit_context_md", "after": ["gap.compare.env_ready", "gap.compare.claim", "gap.compare.human_approve"], "after_effects": null, "risk": "irreversible"}], "vein": {"edges": [{"edge": ":start=>gap.compare.env_ready", "weight": 0.625, "success": 1, "fail": 0}, {"edge": "gap.compare.env_ready=>gap.compare.human_approve", "weight": 0.625, "success": 1, "fail": 0}], "count": 2, "destroys": "app-factory hebbian_engine on module prompts"}, "seal_version": "0.3.0", "coverage": {"counts": {"auto": 0, "escalate": 1, "human": 0, "code": 1, "unknown": 0}, "total_seals": 2, "auto_or_code": 1, "human": 0, "escalate_open": ["gap.compare.claim"], "human_form_pending": ["gap.compare.human_approve"], "primary_source_failures": [], "auto_rate": 0.5, "destroys": "accuracy-without-coverage dashboards; mint-as-product", "seals": [{"id": "seal.0001", "gap": "gap.compare.env_ready", "path": "code", "provider": "code:env_ready_harness", "adopt_decision": "adopt", "human_form_submitted": false}, {"id": "seal.0002", "gap": "gap.compare.human_approve", "path": "escalate", "provider": "code:agent_auto_click_forbidden", "adopt_decision": "defer", "human_form_submitted": false}]}, "evidence": [{"id": "evidence.0001", "kind": "harness_done", "ref": "runs/compare-jev-20260919/env-ready-done.md", "note": "PATH HOME nonempty", "seal": null, "gap": "gap.compare.env_ready", "at": "2026-09-19T08:44:48+00:00"}, {"id": "evidence.0002", "kind": "harness_escalate", "ref": "runs/compare-jev-20260919/claim-seal-escalate.md", "note": "Jev BLOCK decision; SEAL does not seal claim; ship stays locked", "seal": null, "gap": "gap.compare.claim", "at": "2026-09-19T08:45:03+00:00"}, {"id": "evidence.0003", "kind": "jev_mint", "ref": "examples/compare-jev/jev-only/claim-gate-stdout-bad.json", "note": "decision=BLOCK noul=0.99 model=jev-1.13.0", "seal": null, "gap": "gap.compare.claim", "at": "2026-09-19T08:45:03+00:00"}, {"id": "evidence.0004", "kind": "harness_done", "ref": "runs/compare-jev-20260919/blocked-queue-done.md", "note": "queue-only invariant; never auto-approve", "seal": null, "gap": "gap.compare.human_approve", "at": "2026-09-19T08:45:03+00:00"}]};
+const UKDL = "%% SEAL UKDL subset — not executable UKDL L3–L5\n%% Allowed: meta gap candidate seal effect entity rel\n%% Banned: action pipeline quantum (and block/schema/include/context)\n\n:: meta id=meta:product-compare.jev.20260919\n@seal_version: \"0.3.0\"\n@product: \"compare.jev.20260919\"\n@idea: \"Can we READY BlogRich-like deploy and publish marketing HTML without hiding exceptions?\"\n@pack: \"compare.jev\"\n@pack_version: \"0.3.8\"\n@lang: \"ko\"\n@created_at: \"2026-09-19T08:44:48+00:00\"\n@ukdl_level: 1\n@seal_dialect: \"seal-ukdl-0.1\"\n::\n\n:: gap id=gap.compare.env_ready risk=product_foundation\n@ask: \"Deploy/env: PATH and HOME present+nonempty before BlogRich-like READY (code-only harness).\"\n@status: \"sealed\"\n@sealed_by: \"seal.0001\"\n::\n\n:: gap id=gap.compare.claim risk=user_trust\n@ask: \"Marketing HTML claim-gate (TypeSafe/Jev Noul). FAIL/API/BLOCK → escalate 「확인 실패」 — never silent PASS.\"\n@status: \"open\"\n::\n\n:: gap id=gap.compare.human_approve risk=user_trust\n@ask: \"Human form / subscribe / blocked approval queue — agent auto ≠ success; human_form_required.\"\n@status: \"sealed\"\n@sealed_by: \"seal.0002\"\n::\n\n:: candidate id=candidate.0001 gap=@gap.compare.env_ready\n@value: {\"ok\": true, \"predicate\": \"code:env_ready_harness\"}\n@by: \"code\"\n::\n\n:: candidate id=candidate.0002 gap=@gap.compare.human_approve\n@value: {\"ok\": true, \"predicate\": \"code:agent_auto_click_forbidden\"}\n@by: \"code\"\n::\n\n:: seal id=seal.0001 gap=@gap.compare.env_ready\n@candidate: @candidate.0001\n@provider: \"code:env_ready_harness\"\n@at: \"2026-09-19T08:44:48+00:00\"\n@strike_id: \"strike.seal.0001\"\n::\n\n:: seal id=seal.0002 gap=@gap.compare.human_approve\n@candidate: @candidate.0002\n@provider: \"code:agent_auto_click_forbidden\"\n@at: \"2026-09-19T08:45:03+00:00\"\n@strike_id: \"strike.seal.0002\"\n::\n\n:: effect id=effect.compare.ship\n@status: \"locked\"\n@after: [\"gap.compare.env_ready\", \"gap.compare.claim\", \"gap.compare.human_approve\"]\n@run: \"emit_context_md\"\n@risk: \"irreversible\"\n::\n\n:: entity id=ent:vein type=SealVein\n@edges: {\":start=>gap.compare.env_ready\": {\"weight\": 0.625, \"success\": 1, \"fail\": 0}, \"gap.compare.env_ready=>gap.compare.human_approve\": {\"weight\": 0.625, \"success\": 1, \"fail\": 0}}\n@summary: \"weights from sealed transitions only\"\n::\n";
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+document.getElementById('title').textContent =
+  BOARD.title + ' · ' + (BOARD.product.id || '');
+document.getElementById('idea').textContent = BOARD.product.idea || '(no idea)';
+document.getElementById('banner').innerHTML =
+  'Not a module studio. Open <em>Gaps</em> ranked by Vein + risk. ' +
+  'Generation does not advance the product. Pack: <em>' +
+  esc(BOARD.product.pack) + '</em>. Destroys: ' + esc(BOARD.destroys) + '.';
+const c = BOARD.counts;
+document.getElementById('pills').innerHTML = [
+  ['open', c.open], ['blocked', c.blocked], ['sealed', c.sealed],
+  ['candidates', c.candidates], ['seals', c.seals]
+].map(([k,v]) => '<span class="pill">' + k + ' <strong>' + v + '</strong></span>').join('');
+function cardHTML(g, forceRec) {
+  const rec = forceRec || g.recommended;
+  const cls = ['card', g.status, rec ? 'recommended' : ''].filter(Boolean).join(' ');
+  const miss = (g.waiting_on && g.waiting_on.length)
+    ? '<div class="risk">blocked until sealed: ' + esc(g.waiting_on.join(', ')) + '</div>'
+    : '';
+  const vein = g.vein_score != null
+    ? '<div class="rec">vein ' + g.vein_score + '</div>'
+    : (rec ? '<div class="rec">next</div>' : '');
+  return '<article class="' + cls + '">' +
+    '<div><span class="badge ' + esc(g.status) + '">' + esc(g.status) + '</span>' +
+    '<span class="risk ' + esc(g.risk) + '"> · ' + esc(g.risk) + '</span></div>' +
+    '<div class="ask">' + esc(g.ask) + '</div>' +
+    '<div class="meta">' + esc(g.id) + '</div>' +
+    vein + miss + '</article>';
+}
+const nextIds = new Set((BOARD.next || []).map(n => n.gap));
+const nextCards = BOARD.gaps.filter(g => nextIds.has(g.id) && g.status === 'open');
+document.getElementById('next').innerHTML = nextCards.length
+  ? nextCards.map(g => cardHTML(g, true)).join('')
+  : '<div class="sub">No open unblocked gaps — foundation may be sealed.</div>';
+document.getElementById('gaps').innerHTML = BOARD.gaps.map(g => cardHTML(g)).join('');
+const cov = BOARD.coverage || {};
+const cc = cov.counts || {};
+document.getElementById('coverage').innerHTML = [
+  ['auto', cc.auto||0], ['code', cc.code||0], ['human', cc.human||0],
+  ['escalate', cc.escalate||0], ['auto_rate', (cov.auto_rate!=null?cov.auto_rate.toFixed(2):'—')]
+].map(([k,v]) => '<span class="pill">'+k+' <strong>'+v+'</strong></span>').join('');
+const esc = cov.escalate_open || [];
+document.getElementById('escalate').textContent = esc.length
+  ? ('Open escalations: ' + esc.join(', '))
+  : 'No open escalations.';
+
+document.getElementById('effects').innerHTML = (BOARD.effects || []).map(e =>
+  '<div class="effect"><span class="badge ' + esc(e.status) + '">' + esc(e.status) + '</span>' +
+  '<div class="meta" style="margin-top:0.4rem">' + esc(e.id) + '</div>' +
+  '<div class="risk">' + esc(e.run || '') + '</div></div>'
+).join('') || '<div class="sub">No effects in this pack.</div>';
+document.getElementById('vein').textContent = JSON.stringify(BOARD.vein, null, 2);
+document.getElementById('ukdl').textContent = UKDL || '(ukdl not embedded)';
+const nxt = (BOARD.next && BOARD.next[0]) ? BOARD.next[0].gap : '(none open)';
+document.getElementById('cta-cmd').textContent =
+  'seal strike|seal-code — next: ' + nxt;
+document.getElementById('foot').textContent =
+  'seal ' + (BOARD.seal_version || '') + ' · Gap Board S8 · JSON canonical remains source of truth';
+</script>
+</body>
+</html>

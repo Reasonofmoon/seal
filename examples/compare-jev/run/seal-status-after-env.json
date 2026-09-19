@@ -1,0 +1,64 @@
+{
+  "product": "compare.jev.20260919",
+  "open": [
+    "gap.compare.claim",
+    "gap.compare.human_approve"
+  ],
+  "blocked": [],
+  "sealed": [
+    "gap.compare.env_ready"
+  ],
+  "effects": {
+    "effect.compare.ship": "locked"
+  },
+  "effect_locks": {
+    "effect.compare.ship": [
+      "unsealed:['gap.compare.claim', 'gap.compare.human_approve']"
+    ]
+  },
+  "candidates": 1,
+  "seals": 1,
+  "next": [
+    {
+      "gap": "gap.compare.claim",
+      "score": 0.1,
+      "ask": "Marketing HTML claim-gate (TypeSafe/Jev Noul). FAIL/API/BLOCK → escalate 「확인 실패」 — never silent PASS.",
+      "risk": "user_trust"
+    },
+    {
+      "gap": "gap.compare.human_approve",
+      "score": 0.1,
+      "ask": "Human form / subscribe / blocked approval queue — agent auto ≠ success; human_form_required.",
+      "risk": "user_trust"
+    }
+  ],
+  "coverage": {
+    "counts": {
+      "auto": 0,
+      "escalate": 0,
+      "human": 0,
+      "code": 1,
+      "unknown": 0
+    },
+    "total_seals": 1,
+    "auto_or_code": 1,
+    "human": 0,
+    "escalate_open": [],
+    "human_form_pending": [
+      "gap.compare.human_approve"
+    ],
+    "primary_source_failures": [],
+    "auto_rate": 1.0,
+    "destroys": "accuracy-without-coverage dashboards; mint-as-product",
+    "seals": [
+      {
+        "id": "seal.0001",
+        "gap": "gap.compare.env_ready",
+        "path": "code",
+        "provider": "code:env_ready_harness",
+        "adopt_decision": "adopt",
+        "human_form_submitted": false
+      }
+    ]
+  }
+}

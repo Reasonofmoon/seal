@@ -1,0 +1,20 @@
+{
+  "id": "gap.compare.human_approve",
+  "ask": "Human form / subscribe / blocked approval queue — agent auto ≠ success; human_form_required.",
+  "risk": "user_trust",
+  "human_form_required": true,
+  "schema": { "type": "object", "required": ["ok"] },
+  "requires": [],
+  "fillers": ["human", "code"],
+  "accept": [
+    {
+      "id": "form_submitted",
+      "type": "choice",
+      "instructions": {
+        "question": "Was the human approval/subscribe form actually submitted (not agent-simulated)?"
+      },
+      "choice_in": ["pass"],
+      "confidence_gte": 0.7
+    }
+  ]
+}
