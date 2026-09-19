@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.10 — 2026-09-19
+
+### README screenshots for non-JS viewers
+- Embed live Gap Board shots in See the Board + Worked compare (compare + demo)
+
 ## 0.3.9 — 2026-09-19
 
 ### README compare analysis + Gap Board fix

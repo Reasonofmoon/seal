@@ -59,6 +59,16 @@ Generation can fill **Candidates**. Only a **Seal** advances the product. **Effe
   <img src="docs/assets/seal-gap-board-ui.png" alt="SEAL Gap Board UI — Next, Open, Blocked, Sealed, Coverage, Effects" width="100%" />
 </p>
 
+
+<p align="center">
+  <img src="docs/assets/board-live-compare.png" alt="Live Gap Board — SEAL vs Jev compare (ship locked)" width="100%" />
+</p>
+<p align="center"><em>Live render: compare.jev — Next=claim escalate, effect.ship locked (for readers who cannot run board.html JS on GitHub)</em></p>
+<p align="center">
+  <img src="docs/assets/board-live-demo.png" alt="Live Gap Board — demo-open open/blocked cards" width="100%" />
+</p>
+<p align="center"><em>Live render: demo-open — open + blocked gap cards</em></p>
+
 **Affordance map**
 
 | Surface | What it invites |
@@ -123,6 +133,9 @@ Full log: [`examples/compare-jev/COMPARE.md`](examples/compare-jev/COMPARE.md) �
 
 <p align="center">
   <img src="docs/assets/board-live-compare.png" alt="Live Gap Board — compare.jev ship locked" width="100%" />
+</p>
+<p align="center">
+  <img src="docs/assets/board-live-demo.png" alt="Live Gap Board — demo-open" width="100%" />
 </p>
 
 | Observation | Jev-only | SEAL (real run) |
