@@ -227,16 +227,19 @@ document.getElementById('coverage').innerHTML = [
   ['auto', cc.auto||0], ['code', cc.code||0], ['human', cc.human||0],
   ['escalate', cc.escalate||0], ['auto_rate', (cov.auto_rate!=null?cov.auto_rate.toFixed(2):'—')]
 ].map(([k,v]) => '<span class="pill">'+k+' <strong>'+v+'</strong></span>').join('');
-const esc = cov.escalate_open || [];
-document.getElementById('escalate').textContent = esc.length
-  ? ('Open escalations: ' + esc.join(', '))
+const escalateOpen = cov.escalate_open || [];
+document.getElementById('escalate').textContent = escalateOpen.length
+  ? ('Open escalations: ' + escalateOpen.join(', '))
   : 'No open escalations.';
 
-document.getElementById('effects').innerHTML = (BOARD.effects || []).map(e =>
-  '<div class="effect"><span class="badge ' + esc(e.status) + '">' + esc(e.status) + '</span>' +
-  '<div class="meta" style="margin-top:0.4rem">' + esc(e.id) + '</div>' +
-  '<div class="risk">' + esc(e.run || '') + '</div></div>'
-).join('') || '<div class="sub">No effects in this pack.</div>';
+document.getElementById('effects').innerHTML = (BOARD.effects || []).map(e => {
+  const lr = (e.lock_reason && e.lock_reason.length)
+    ? '<div class="risk" style="margin-top:0.35rem">lock: ' + esc(Array.isArray(e.lock_reason) ? e.lock_reason.join('; ') : e.lock_reason) + '</div>'
+    : '';
+  return '<div class="effect"><span class="badge ' + esc(e.status) + '">' + esc(e.status) + '</span>' +
+    '<div class="meta" style="margin-top:0.4rem">' + esc(e.id) + '</div>' +
+    '<div class="risk">' + esc(e.run || '') + '</div>' + lr + '</div>';
+}).join('') || '<div class="sub">No effects in this pack.</div>';
 document.getElementById('vein').textContent = JSON.stringify(BOARD.vein, null, 2);
 document.getElementById('ukdl').textContent = UKDL || '(ukdl not embedded)';
 const nxt = (BOARD.next && BOARD.next[0]) ? BOARD.next[0].gap : '(none open)';

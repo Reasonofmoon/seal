@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.9 — 2026-09-19
+
+### README compare analysis + Gap Board fix
+- Document worked SEAL vs Jev run (ship locked, Jev BLOCK noul 0.99)
+- Board model emits `waiting_on` + effect `lock_reason` for live dashboard
+- Regenerate example boards; note GitHub HTML preview does not execute JS
+- Fix Gap Board JS (`const esc` shadowed escalate list) — live dashboards render again
+- Live screenshots: `docs/assets/board-live-compare.png`, `board-live-demo.png`
+
 ## 0.3.8 — 2026-09-19
 
 ### Worked compare-jev log

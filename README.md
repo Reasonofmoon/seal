@@ -11,6 +11,8 @@
   &nbsp;·&nbsp;
   <a href="docs/BEYOND-JEV.md"><strong>Beyond Jev</strong></a>
   &nbsp;·&nbsp;
+  <a href="#worked-compare-jev"><strong>SEAL vs Jev log</strong></a>
+  &nbsp;·&nbsp;
   <a href="https://github.com/Reasonofmoon/seal/tree/main/examples/public-repos"><strong>Public proof</strong></a>
 </p>
 
@@ -28,7 +30,7 @@
 **SEAL** (Seal · Evidence · Atomic Lock) is a workflow kernel.  
 Generation can fill **Candidates**. Only a **Seal** advances the product. **Effects** (CONTEXT, codegen, deploy) stay locked until seals — and coverage — clear.
 
-**Fleet harness (v0.3.6):** run `scripts/harness/*.sh` from Herdr plans — never pane prompts ([COVERAGE-POLICY.md](docs/COVERAGE-POLICY.md)).
+**Fleet harness (v0.3.7+):** run `scripts/harness/*.sh` from Herdr plans — never pane prompts ([COVERAGE-POLICY.md](docs/COVERAGE-POLICY.md)).
 
 > Jev answers questions.  
 > **SEAL answers whether the world may change — and refuses to hide the exception queue.**
@@ -67,8 +69,8 @@ Generation can fill **Candidates**. Only a **Seal** advances the product. **Effe
 | **Effects** | Locked / Ready / Done — post-seal only |
 | **Open gap pack** | Primary CTA — start a product |
 
-Live HTML boards in-repo:  
-[`examples/demo-open/board.html`](examples/demo-open/board.html) · [`examples/readmaster-habit/board.html`](examples/readmaster-habit/board.html) · [`examples/public-repos/langchain/board.html`](examples/public-repos/langchain/board.html)
+Live HTML boards in-repo (open via local server — GitHub’s HTML preview does **not** run the dashboard JS):  
+[`examples/compare-jev/run/board.html`](examples/compare-jev/run/board.html) · [`examples/demo-open/board.html`](examples/demo-open/board.html) · [`examples/readmaster-habit/board.html`](examples/readmaster-habit/board.html) · [`examples/public-repos/langchain/board.html`](examples/public-repos/langchain/board.html)
 
 ```bash
 PYTHONPATH=src python3 src/seal/cli.py board --graph examples/readmaster-habit/graph.json --out /tmp/board.html

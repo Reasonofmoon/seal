@@ -29,7 +29,8 @@ def board_model(graph: dict[str, Any]) -> dict[str, Any]:
             "status": state,
             "requires": gap.get("requires") or [],
             "sealed_by": gap.get("sealed_by"),
-            "missing": (blocked_map.get(gid) or {}).get("missing") or [],
+            "waiting_on": (blocked_map.get(gid) or {}).get("waiting_on") or [],
+            "missing": (blocked_map.get(gid) or {}).get("waiting_on") or [],  # alias
             "vein_score": (next_scores.get(gid) or {}).get("score"),
             "recommended": gid in next_scores and state == "open",
         })
@@ -50,6 +51,7 @@ def board_model(graph: dict[str, Any]) -> dict[str, Any]:
             "after": eff.get("after"),
             "after_effects": eff.get("after_effects"),
             "risk": eff.get("risk"),
+            "lock_reason": eff.get("lock_reason"),
         })
     effects.sort(key=lambda e: ({"ready": 0, "done": 1, "locked": 2}.get(e["status"], 9), e["id"]))
     product = graph.get("product") or {}
