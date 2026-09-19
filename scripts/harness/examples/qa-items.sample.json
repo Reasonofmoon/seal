@@ -1,0 +1,29 @@
+[
+  {
+    "id": "pr-42",
+    "title": "CI failed on main after dependency bump",
+    "kind": "ci_fail",
+    "repo": "Reasonofmoon/seal",
+    "ageDays": 0,
+    "ciFailed": true,
+    "security": false
+  },
+  {
+    "id": "sec-7",
+    "title": "Dependabot high: transitive XSS in markdown renderer",
+    "kind": "security",
+    "repo": "Reasonofmoon/blogrich",
+    "ageDays": 1,
+    "ciFailed": false,
+    "security": true
+  },
+  {
+    "id": "docs-3",
+    "title": "Typo in README badge URL",
+    "kind": "docs",
+    "repo": "Reasonofmoon/seal",
+    "ageDays": 3,
+    "ciFailed": false,
+    "security": false
+  }
+]

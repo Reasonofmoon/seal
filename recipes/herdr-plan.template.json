@@ -1,0 +1,47 @@
+{
+  "id": "RUN_ID",
+  "goal": "Describe the run goal in one sentence.",
+  "workers": {
+    "w1:p1": {
+      "role": "hermes",
+      "artifact": "01-scout.md",
+      "task": "Scout inputs; write artifact only."
+    },
+    "w1:p4": {
+      "role": "codex",
+      "artifact": "02-implement.md",
+      "task": "Implement; write artifact only. No secrets in prompts."
+    },
+    "w1:p6": {
+      "role": "claude",
+      "artifact": "03-review.md",
+      "task": "Review artifacts; write review file."
+    }
+  },
+  "steps": [
+    {
+      "id": "blocked-queue",
+      "run": "bash /workspace/seal/scripts/harness/step-herdr-blocked-queue.sh RUN_ID",
+      "note": "ALWAYS first: documents queue-only; never auto-approve agent_blocked."
+    },
+    {
+      "id": "domain-gates-placeholder",
+      "comment": "Domain gates (pick as needed; harness step only — never pane prompt):",
+      "examples": [
+        "bash /workspace/seal/scripts/harness/step-env-ready.sh RUN_ID VERCEL_TOKEN TYPESAFE_API_KEY",
+        "bash /workspace/seal/scripts/harness/step-claim-gate.sh RUN_ID /path/to/final.html",
+        "bash /workspace/seal/scripts/harness/step-github-qa-score.sh RUN_ID /path/to/qa-items.json",
+        "bash /workspace/seal/scripts/harness/step-require-done.sh RUN_ID \"${SEAL_RUNS_ROOT:-/workspace/seal/runs}/RUN_ID/*-done.md\""
+      ]
+    },
+    {
+      "id": "collect",
+      "collect": [
+        "runs/RUN_ID/*-done.md",
+        "runs/RUN_ID/*-escalate.md"
+      ],
+      "success_rule": "Success = *-done.md exists (+ schema/exit 0). Escalate files mean STOP — never treat as pass. Do not use agent scrollback."
+    }
+  ],
+  "success": "blocked-queue-done.md (and any domain *-done.md) exist under SEAL_RUNS_ROOT/RUN_ID; worker artifacts under this folder; never auto-approve blocked."
+}

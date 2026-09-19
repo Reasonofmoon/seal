@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.7 — 2026-09-19
+
+### Operator call-site wiring (templates + runbook)
+- Herdr plan template mirrored: `recipes/herdr-plan.template.json`, `recipes/herdr-run-README.md`
+- Frontier Gap recipe: `recipes/harness-frontier-gap.md` (human_form / adopt / primary-source)
+- Deploy recipe: BlogRich env **name** checklist + `step-env-ready` → `step-require-done` before READY
+- moonlang publish recipe expanded (draft + live claim-gate; `claim-seal-done.md` only)
+- GitHub QA: `scripts/harness/examples/qa-items.sample.json` + `ghqa-YYYYMMDD` run_id pattern
+- Operator runbook: `docs/OPERATOR-RUNBOOK.md` — five owners' mandatory commands
+- Note: moonlang standing-orders SKILL + Herdr `runs/_TEMPLATE` / `bin/new-run.sh` live on the box (agent-data / herdr-manager), not this git tree except the recipe mirrors above
+
 ## 0.3.6 — 2026-09-19
 
 ### Council seal APPLIED (kernel + harness scripts)

@@ -47,7 +47,7 @@ Canonical location: **`scripts/harness/`**
 
 Evidence SSOT: `SEAL_RUNS_ROOT/<run_id>/*-done.md` (default `/workspace/seal/runs`).
 
-Recipes: `recipes/harness-coverage-gate.md`, `harness-deploy-env.md`, `harness-moonlang-publish.md`, `harness-github-qa.md`.
+Recipes: `recipes/harness-coverage-gate.md`, `harness-deploy-env.md`, `harness-moonlang-publish.md`, `harness-github-qa.md`, `harness-frontier-gap.md`, `herdr-plan.template.json`. Operator: [OPERATOR-RUNBOOK.md](OPERATOR-RUNBOOK.md).
 
 ## Fleet harness (council 2026-09-19)
 

@@ -1,6 +1,6 @@
 # Recipe: harness Coverage Gate (from Herdr plan.json)
 
-Council 2026-09-19 · SEAL v0.3.6
+Council 2026-09-19 · SEAL v0.3.7
 
 ## Invariant
 
@@ -36,3 +36,5 @@ Council 2026-09-19 · SEAL v0.3.6
 ```
 
 Collect success = files exist (not agent scrollback).
+
+Use `recipes/herdr-plan.template.json` (or Herdr `runs/_TEMPLATE` + `bin/new-run.sh`) so every plan includes blocked-queue + collect done/escalate.
