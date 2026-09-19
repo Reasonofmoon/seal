@@ -1,0 +1,41 @@
+{
+  "id": "gap.edtech.vision.one_liner",
+  "ask": "이 제품이 12개월 뒤에도 같은 문장으로 설명되는가? (한 줄)",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "string",
+    "minLength": 16,
+    "maxLength": 160
+  },
+  "requires": [
+    "gap.edtech.jtbd.core_job",
+    "gap.edtech.persona.primary"
+  ],
+  "fillers": [
+    "human",
+    "generative.af.vision"
+  ],
+  "accept": [
+    {
+      "id": "aligned_to_jtbd",
+      "type": "noul",
+      "instructions": {
+        "question": "Does `proposal.value` stay faithful to sealed `facts.jtbd` without inventing metrics?",
+        "compare": [
+          "`proposal.value`",
+          "`facts.jtbd`",
+          "`facts.persona`"
+        ]
+      },
+      "noul_gte": 0.75
+    },
+    {
+      "id": "metric_honesty",
+      "type": "noul",
+      "instructions": {
+        "question": "Does `proposal.value` avoid fabricated performance numbers or LIVE-style trust claims?"
+      },
+      "noul_gte": 0.8
+    }
+  ]
+}

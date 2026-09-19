@@ -1,0 +1,25 @@
+{
+  "id": "gap.af.spec.corpus",
+  "ask": "감사 대상 스펙 원문(마크다운)을 봉인한다. 이후 13루브릭 Gap이 이 원문만 본다.",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "string",
+    "minLength": 80
+  },
+  "requires": [],
+  "fillers": [
+    "human",
+    "import.file",
+    "generative.af.ship"
+  ],
+  "accept": [
+    {
+      "id": "is_spec_like",
+      "type": "noul",
+      "instructions": {
+        "question": "Is `proposal.value` a product/spec document (goals, scope, plan) rather than empty notes?"
+      },
+      "noul_gte": 0.65
+    }
+  ]
+}

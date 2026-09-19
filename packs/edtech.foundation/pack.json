@@ -1,0 +1,23 @@
+{
+  "id": "edtech.foundation",
+  "version": "0.1.0",
+  "title": "EdTech foundation gaps",
+  "description": "Five foundation holes. No module parade. Seal to advance.",
+  "lang": "ko",
+  "gaps": [
+    "gap.edtech.jtbd.core_job",
+    "gap.edtech.persona.primary",
+    "gap.edtech.vision.one_liner",
+    "gap.edtech.constraints.non_negotiables",
+    "gap.edtech.ethics.dark_pattern_ban"
+  ],
+  "unlock_effects": {
+    "effect.emit_context": [
+      "gap.edtech.jtbd.core_job",
+      "gap.edtech.persona.primary",
+      "gap.edtech.vision.one_liner",
+      "gap.edtech.constraints.non_negotiables",
+      "gap.edtech.ethics.dark_pattern_ban"
+    ]
+  }
+}

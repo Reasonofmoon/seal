@@ -1,0 +1,89 @@
+{
+  "id": "gap.af.rubric.R03_team_budget_clarity",
+  "ask": "[AF conquest R03 team_budget_clarity] Does the spec state team size and/or funding/runway clearly enough to reject impossible solo builds?",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "object",
+    "required": [
+      "evidence_refs",
+      "assertion"
+    ],
+    "properties": {
+      "evidence_refs": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string"
+        }
+      },
+      "assertion": {
+        "type": "string",
+        "minLength": 12
+      },
+      "known_issues": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "requires": [
+    "gap.af.spec.corpus"
+  ],
+  "fillers": [
+    "human",
+    "generative.af.spec-audit-row",
+    "import"
+  ],
+  "af_legacy": {
+    "rubric_id": "R03",
+    "category": "team_budget_clarity",
+    "measures": "who builds it, cost, funding"
+  },
+  "accept": [
+    {
+      "id": "passes_category",
+      "type": "noul",
+      "instructions": {
+        "question": "Does the spec state team size and/or funding/runway clearly enough to reject impossible solo builds?",
+        "focus": "Category R03 (team_budget_clarity). Fail if detection patterns fire.",
+        "compare": [
+          "`facts.spec_text`",
+          "`proposal.value`",
+          "`facts.known_cli_flags`"
+        ],
+        "fail_examples": [
+          "18-week Series-B scope with zero team/funding mention"
+        ]
+      },
+      "criteria": {
+        "true": {
+          "what": "Spec satisfies team_budget_clarity",
+          "examples": [
+            "Clear evidence for who builds it, cost, funding"
+          ]
+        },
+        "false": {
+          "what": "Spec fails team_budget_clarity",
+          "examples": [
+            "18-week Series-B scope with zero team/funding mention"
+          ]
+        }
+      },
+      "noul_gte": 0.72
+    },
+    {
+      "id": "evidence_grounded",
+      "type": "noul",
+      "instructions": {
+        "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+        "compare": [
+          "`proposal.value.evidence_refs`",
+          "`facts.spec_text`"
+        ]
+      },
+      "noul_gte": 0.7
+    }
+  ]
+}

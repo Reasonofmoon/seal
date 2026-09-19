@@ -1,0 +1,52 @@
+{
+  "effect.aplus_implement_unlock": {
+    "id": "effect.aplus_implement_unlock",
+    "after": [
+      "gap.af.spec.corpus",
+      "gap.af.rubric.R01_timeline_realism",
+      "gap.af.rubric.R02_assumption_evidence",
+      "gap.af.rubric.R03_team_budget_clarity",
+      "gap.af.rubric.R04_competitive_depth",
+      "gap.af.rubric.R05_cli_flag_validity",
+      "gap.af.rubric.R06_stage_fit",
+      "gap.af.rubric.R07_north_star_quality",
+      "gap.af.rubric.R08_pricing_evidence",
+      "gap.af.rubric.R09_risk_completeness",
+      "gap.af.rubric.R10_dependency_clarity",
+      "gap.af.rubric.R11_measurable_outcomes",
+      "gap.af.rubric.R12_rollback_plan",
+      "gap.af.rubric.R13_scope_discipline"
+    ],
+    "after_effects": [],
+    "run": "emit_aplus_passport",
+    "risk": "product_foundation",
+    "status": "locked",
+    "replaces": "overall.aplus_threshold_passed in spec-audit"
+  },
+  "effect.emit_context": {
+    "id": "effect.emit_context",
+    "after": [],
+    "after_effects": [
+      "effect.aplus_implement_unlock"
+    ],
+    "run": "emit_context_md",
+    "risk": "read",
+    "status": "locked",
+    "replaces": "ungated app-factory pack CONTEXT emit"
+  },
+  "effect.codegen_vertical_slice": {
+    "id": "effect.codegen_vertical_slice",
+    "after": [],
+    "after_effects": [
+      "effect.aplus_implement_unlock",
+      "effect.emit_context"
+    ],
+    "run": "emit_codegen_stub",
+    "risk": "product_foundation",
+    "status": "locked",
+    "replaces": [
+      "app-factory implement",
+      "app-factory apply-implementation"
+    ]
+  }
+}

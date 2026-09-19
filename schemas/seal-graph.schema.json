@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seal.local/schemas/seal-graph.schema.json",
+  "title": "SEAL Graph",
+  "type": "object",
+  "required": [
+    "seal_version",
+    "product",
+    "gaps",
+    "candidates",
+    "seals",
+    "effects",
+    "journal"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "seal_version": {
+      "const": "0.1.0"
+    },
+    "product": {
+      "type": "object",
+      "required": [
+        "id",
+        "idea"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "idea": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pack": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string",
+          "default": "ko"
+        },
+        "created_at": {
+          "type": "string"
+        }
+      }
+    },
+    "gaps": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/gap"
+      }
+    },
+    "candidates": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/candidate"
+      }
+    },
+    "seals": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/seal"
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/effect"
+      }
+    },
+    "journal": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "vein": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    }
+  },
+  "$defs": {
+    "risk": {
+      "type": "string",
+      "enum": [
+        "read",
+        "product_foundation",
+        "user_trust",
+        "irreversible"
+      ]
+    },
+    "acceptRule": {
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "noul",
+            "choice",
+            "score"
+          ]
+        },
+        "instructions": {},
+        "criteria": {},
+        "noul_gte": {
+          "type": "number"
+        },
+        "noul_lte": {
+          "type": "number"
+        },
+        "choice_in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence_gte": {
+          "type": "number"
+        },
+        "score_gte": {
+          "type": "number"
+        },
+        "speculative": {
+          "type": "boolean"
+        }
+      }
+    },
+    "gap": {
+      "type": "object",
+      "required": [
+        "id",
+        "ask",
+        "risk",
+        "schema",
+        "accept",
+        "fillers"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ask": {
+          "type": "string"
+        },
+        "risk": {
+          "$ref": "#/$defs/risk"
+        },
+        "schema": {
+          "type": "object"
+        },
+        "accept": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/acceptRule"
+          },
+          "minItems": 1
+        },
+        "fillers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "sealed",
+            "blocked"
+          ]
+        },
+        "sealed_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "required": [
+        "id",
+        "gap",
+        "value",
+        "by"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "gap": {
+          "type": "string"
+        },
+        "value": {},
+        "by": {
+          "type": "string"
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "meta": {
+          "type": "object"
+        }
+      }
+    },
+    "seal": {
+      "type": "object",
+      "required": [
+        "id",
+        "gap",
+        "candidate",
+        "provider",
+        "answers",
+        "state_hash",
+        "questions_hash",
+        "at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "gap": {
+          "type": "string"
+        },
+        "candidate": {
+          "type": "string"
+        },
+        "strike_id": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "answers": {
+          "type": "object"
+        },
+        "policy_risk": {
+          "$ref": "#/$defs/risk"
+        },
+        "state_hash": {
+          "type": "string"
+        },
+        "questions_hash": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string"
+        },
+        "deprecated": {
+          "type": "boolean"
+        },
+        "superseded_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "effect": {
+      "type": "object",
+      "required": [
+        "id",
+        "after",
+        "run",
+        "risk"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "after": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "run": {
+          "type": "string"
+        },
+        "risk": {
+          "$ref": "#/$defs/risk"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "locked",
+            "ready",
+            "done"
+          ]
+        }
+      }
+    }
+  }
+}

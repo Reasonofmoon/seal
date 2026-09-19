@@ -1,0 +1,28 @@
+{
+  "seal_version": "0.1.0",
+  "bands": {
+    "read": {
+      "heuristic_ok": true,
+      "human_coseal": false,
+      "default_confidence_floor": 0.0
+    },
+    "product_foundation": {
+      "heuristic_ok": true,
+      "human_coseal": false,
+      "default_confidence_floor": 0.55,
+      "typesafe_preferred": true
+    },
+    "user_trust": {
+      "heuristic_ok": false,
+      "human_coseal": false,
+      "default_confidence_floor": 0.7,
+      "typesafe_required": true
+    },
+    "irreversible": {
+      "heuristic_ok": false,
+      "human_coseal": true,
+      "default_confidence_floor": 0.85,
+      "typesafe_required": true
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "gap.edtech.ethics.dark_pattern_ban",
+  "ask": "금지할 다크패턴·조작 UX를 명시하라 (출석 강요, 가짜 긴급, 보호자 우회 등)",
+  "risk": "user_trust",
+  "schema": {
+    "type": "array",
+    "minItems": 3,
+    "items": {
+      "type": "string"
+    }
+  },
+  "requires": [
+    "gap.edtech.constraints.non_negotiables"
+  ],
+  "fillers": [
+    "human",
+    "generative.af.ethics"
+  ],
+  "accept": [
+    {
+      "id": "bans_specific",
+      "type": "noul",
+      "instructions": {
+        "question": "Are items in `proposal.value` specific actionable bans (not vague 'be ethical')?",
+        "focus": "Each item should name a forbidden UX pattern."
+      },
+      "criteria": {
+        "true": {
+          "what": "Concrete banned behaviors",
+          "examples": [
+            "Fake urgency timers",
+            "Guilt-streak punishment for children"
+          ]
+        },
+        "false": {
+          "what": "Vague ethics slogans",
+          "examples": [
+            "Be kind",
+            "No dark patterns"
+          ]
+        }
+      },
+      "noul_gte": 0.75
+    },
+    {
+      "id": "covers_coercion",
+      "type": "noul",
+      "instructions": {
+        "question": "Does `proposal.value` ban coercive pressure on a child learner (punishment, forced attendance scoring, shame streaks)?"
+      },
+      "noul_gte": 0.7
+    },
+    {
+      "id": "covers_deception",
+      "type": "noul",
+      "instructions": {
+        "question": "Does `proposal.value` ban deceptive UX (fake deadlines, false completion, fabricated social proof)?"
+      },
+      "noul_gte": 0.7
+    },
+    {
+      "id": "covers_guardian_bypass",
+      "type": "noul",
+      "instructions": {
+        "question": "Does `proposal.value` ban bypassing a parent/guardian (hidden charges, sneaking past consent)?"
+      },
+      "noul_gte": 0.7
+    }
+  ]
+}

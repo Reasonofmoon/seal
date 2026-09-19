@@ -1,0 +1,91 @@
+{
+  "id": "gap.af.rubric.R02_assumption_evidence",
+  "ask": "[AF conquest R02 assumption_evidence] Do numerical claims in the spec have nearby sources, or an assumptions-to-verify table?",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "object",
+    "required": [
+      "evidence_refs",
+      "assertion"
+    ],
+    "properties": {
+      "evidence_refs": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string"
+        }
+      },
+      "assertion": {
+        "type": "string",
+        "minLength": 12
+      },
+      "known_issues": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "requires": [
+    "gap.af.spec.corpus"
+  ],
+  "fillers": [
+    "human",
+    "generative.af.spec-audit-row",
+    "import"
+  ],
+  "af_legacy": {
+    "rubric_id": "R02",
+    "category": "assumption_evidence",
+    "measures": "numerical assumptions cite sources"
+  },
+  "accept": [
+    {
+      "id": "passes_category",
+      "type": "noul",
+      "instructions": {
+        "question": "Do numerical claims in the spec have nearby sources, or an assumptions-to-verify table?",
+        "focus": "Category R02 (assumption_evidence). Fail if detection patterns fire.",
+        "compare": [
+          "`facts.spec_text`",
+          "`proposal.value`",
+          "`facts.known_cli_flags`"
+        ],
+        "fail_examples": [
+          "≥3 unsourced ₩/$/% claims",
+          "revenue model on unsourced conversion"
+        ]
+      },
+      "criteria": {
+        "true": {
+          "what": "Spec satisfies assumption_evidence",
+          "examples": [
+            "Clear evidence for numerical assumptions cite sources"
+          ]
+        },
+        "false": {
+          "what": "Spec fails assumption_evidence",
+          "examples": [
+            "≥3 unsourced ₩/$/% claims",
+            "revenue model on unsourced conversion"
+          ]
+        }
+      },
+      "noul_gte": 0.72
+    },
+    {
+      "id": "evidence_grounded",
+      "type": "noul",
+      "instructions": {
+        "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+        "compare": [
+          "`proposal.value.evidence_refs`",
+          "`facts.spec_text`"
+        ]
+      },
+      "noul_gte": 0.7
+    }
+  ]
+}

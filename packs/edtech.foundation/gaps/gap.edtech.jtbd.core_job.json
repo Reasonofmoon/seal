@@ -1,0 +1,57 @@
+{
+  "id": "gap.edtech.jtbd.core_job",
+  "ask": "학습자가 이 앱을 ‘고용’하는 지속 가능한 일은 무엇인가? (솔루션 문장 금지)",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "string",
+    "minLength": 20
+  },
+  "requires": [],
+  "fillers": [
+    "human",
+    "generative.af.jtbd",
+    "import"
+  ],
+  "accept": [
+    {
+      "id": "supports_evidence",
+      "type": "noul",
+      "instructions": {
+        "question": "Does `proposal.value` name a durable job-to-be-done rather than a feature list?",
+        "focus": "Reject solution-shaped statements disguised as jobs."
+      },
+      "criteria": {
+        "true": {
+          "what": "Outcome-framed job a person hires the product to do",
+          "examples": [
+            "Keep a daily English reading habit without parental nagging"
+          ]
+        },
+        "false": {
+          "what": "Feature, stack, or UI wish",
+          "examples": [
+            "Build a gamified quiz app with streaks"
+          ]
+        }
+      },
+      "noul_gte": 0.75
+    },
+    {
+      "id": "form",
+      "type": "choice",
+      "instructions": {
+        "question": "What form is `proposal.value`?",
+        "focus": "Pick one."
+      },
+      "criteria": {
+        "outcome_framed": "States a progress the user wants to make",
+        "solution_framed": "States a product/feature to build",
+        "vague": "Too abstract to guide product decisions"
+      },
+      "choice_in": [
+        "outcome_framed"
+      ],
+      "confidence_gte": 0.6
+    }
+  ]
+}

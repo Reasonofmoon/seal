@@ -1,0 +1,1421 @@
+{
+  "seal_version": "0.1.0",
+  "product": {
+    "id": "copyright-shield-v4",
+    "idea": "CopyRight Shield global B2B",
+    "pack": "conquest.audit-spec",
+    "pack_version": "0.1.0",
+    "lang": "ko",
+    "created_at": "2026-09-19T07:40:02+00:00",
+    "tier": "T3",
+    "known_cli_flags": [
+      "--tier",
+      "--idea",
+      "--extras-file",
+      "--feature-focus",
+      "--model",
+      "--harness",
+      "--envelope",
+      "--out-dir"
+    ]
+  },
+  "gaps": {
+    "gap.af.spec.corpus": {
+      "id": "gap.af.spec.corpus",
+      "ask": "감사 대상 스펙 원문(마크다운)을 봉인한다. 이후 13루브릭 Gap이 이 원문만 본다.",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "string",
+        "minLength": 80
+      },
+      "requires": [],
+      "fillers": [
+        "human",
+        "import.file",
+        "generative.af.ship"
+      ],
+      "accept": [
+        {
+          "id": "is_spec_like",
+          "type": "noul",
+          "instructions": {
+            "question": "Is `proposal.value` a product/spec document (goals, scope, plan) rather than empty notes?"
+          },
+          "noul_gte": 0.65
+        }
+      ],
+      "status": "sealed",
+      "sealed_by": "seal.0001"
+    },
+    "gap.af.rubric.R01_timeline_realism": {
+      "id": "gap.af.rubric.R01_timeline_realism",
+      "ask": "[AF conquest R01 timeline_realism] Are phase timelines realistic given integrations/compliance in `facts.spec_text` / `proposal`?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R01",
+        "category": "timeline_realism",
+        "measures": "stated timelines achievable given declared scope"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Are phase timelines realistic given integrations/compliance in `facts.spec_text` / `proposal`?",
+            "focus": "Category R01 (timeline_realism). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "impossible phase (e.g. SOC2 in 1 week)",
+              "≥3 external integrations in ≤4 weeks without buffer"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies timeline_realism",
+              "examples": [
+                "Clear evidence for stated timelines achievable given declared scope"
+              ]
+            },
+            "false": {
+              "what": "Spec fails timeline_realism",
+              "examples": [
+                "impossible phase (e.g. SOC2 in 1 week)",
+                "≥3 external integrations in ≤4 weeks without buffer"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R02_assumption_evidence": {
+      "id": "gap.af.rubric.R02_assumption_evidence",
+      "ask": "[AF conquest R02 assumption_evidence] Do numerical claims in the spec have nearby sources, or an assumptions-to-verify table?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R02",
+        "category": "assumption_evidence",
+        "measures": "numerical assumptions cite sources"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Do numerical claims in the spec have nearby sources, or an assumptions-to-verify table?",
+            "focus": "Category R02 (assumption_evidence). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "≥3 unsourced ₩/$/% claims",
+              "revenue model on unsourced conversion"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies assumption_evidence",
+              "examples": [
+                "Clear evidence for numerical assumptions cite sources"
+              ]
+            },
+            "false": {
+              "what": "Spec fails assumption_evidence",
+              "examples": [
+                "≥3 unsourced ₩/$/% claims",
+                "revenue model on unsourced conversion"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R03_team_budget_clarity": {
+      "id": "gap.af.rubric.R03_team_budget_clarity",
+      "ask": "[AF conquest R03 team_budget_clarity] Does the spec state team size and/or funding/runway clearly enough to reject impossible solo builds?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R03",
+        "category": "team_budget_clarity",
+        "measures": "who builds it, cost, funding"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Does the spec state team size and/or funding/runway clearly enough to reject impossible solo builds?",
+            "focus": "Category R03 (team_budget_clarity). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "18-week Series-B scope with zero team/funding mention"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies team_budget_clarity",
+              "examples": [
+                "Clear evidence for who builds it, cost, funding"
+              ]
+            },
+            "false": {
+              "what": "Spec fails team_budget_clarity",
+              "examples": [
+                "18-week Series-B scope with zero team/funding mention"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R04_competitive_depth": {
+      "id": "gap.af.rubric.R04_competitive_depth",
+      "ask": "[AF conquest R04 competitive_depth] Does the spec name real competitors and a non-generic differentiation?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R04",
+        "category": "competitive_depth",
+        "measures": "competitors named with differentiated stance"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Does the spec name real competitors and a non-generic differentiation?",
+            "focus": "Category R04 (competitive_depth). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "no competitors",
+              "only vague 'AI tools'"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies competitive_depth",
+              "examples": [
+                "Clear evidence for competitors named with differentiated stance"
+              ]
+            },
+            "false": {
+              "what": "Spec fails competitive_depth",
+              "examples": [
+                "no competitors",
+                "only vague 'AI tools'"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R05_cli_flag_validity": {
+      "id": "gap.af.rubric.R05_cli_flag_validity",
+      "ask": "[AF conquest R05 cli_flag_validity] Do CLI examples in the spec only use flags listed in `facts.known_cli_flags` (when present)?",
+      "risk": "user_trust",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R05",
+        "category": "cli_flag_validity",
+        "measures": "CLI examples use only known flags"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Do CLI examples in the spec only use flags listed in `facts.known_cli_flags` (when present)?",
+            "focus": "Category R05 (cli_flag_validity). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "invented flags like --modules"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies cli_flag_validity",
+              "examples": [
+                "Clear evidence for CLI examples use only known flags"
+              ]
+            },
+            "false": {
+              "what": "Spec fails cli_flag_validity",
+              "examples": [
+                "invented flags like --modules"
+              ]
+            }
+          },
+          "noul_gte": 0.78
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R06_stage_fit": {
+      "id": "gap.af.rubric.R06_stage_fit",
+      "ask": "[AF conquest R06 stage_fit] Is the proposed scope appropriate for the declared tier/stage rather than enterprise-everything?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R06",
+        "category": "stage_fit",
+        "measures": "scope matches declared tier/stage"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Is the proposed scope appropriate for the declared tier/stage rather than enterprise-everything?",
+            "focus": "Category R06 (stage_fit). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "marketplace+DRM+LTI in vibe tier"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies stage_fit",
+              "examples": [
+                "Clear evidence for scope matches declared tier/stage"
+              ]
+            },
+            "false": {
+              "what": "Spec fails stage_fit",
+              "examples": [
+                "marketplace+DRM+LTI in vibe tier"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R07_north_star_quality": {
+      "id": "gap.af.rubric.R07_north_star_quality",
+      "ask": "[AF conquest R07 north_star_quality] Is the north-star metric measurable, leading, and not a vanity target without instrumentation?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R07",
+        "category": "north_star_quality",
+        "measures": "north star measurable and non-vanity"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Is the north-star metric measurable, leading, and not a vanity target without instrumentation?",
+            "focus": "Category R07 (north_star_quality). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "1,000,000 certifications with no instrumentation plan"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies north_star_quality",
+              "examples": [
+                "Clear evidence for north star measurable and non-vanity"
+              ]
+            },
+            "false": {
+              "what": "Spec fails north_star_quality",
+              "examples": [
+                "1,000,000 certifications with no instrumentation plan"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R08_pricing_evidence": {
+      "id": "gap.af.rubric.R08_pricing_evidence",
+      "ask": "[AF conquest R08 pricing_evidence] Is pricing backed by comps, interviews, or marked as assumption-to-verify?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R08",
+        "category": "pricing_evidence",
+        "measures": "pricing grounded"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Is pricing backed by comps, interviews, or marked as assumption-to-verify?",
+            "focus": "Category R08 (pricing_evidence). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "₩ ranges labeled only as 'App Factory 추정' with no verify path"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies pricing_evidence",
+              "examples": [
+                "Clear evidence for pricing grounded"
+              ]
+            },
+            "false": {
+              "what": "Spec fails pricing_evidence",
+              "examples": [
+                "₩ ranges labeled only as 'App Factory 추정' with no verify path"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R09_risk_completeness": {
+      "id": "gap.af.rubric.R09_risk_completeness",
+      "ask": "[AF conquest R09 risk_completeness] Are material product/legal/tech risks listed with mitigations (not only happy path)?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R09",
+        "category": "risk_completeness",
+        "measures": "risks include mitigation"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Are material product/legal/tech risks listed with mitigations (not only happy path)?",
+            "focus": "Category R09 (risk_completeness). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "no risk section",
+              "risks without mitigation"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies risk_completeness",
+              "examples": [
+                "Clear evidence for risks include mitigation"
+              ]
+            },
+            "false": {
+              "what": "Spec fails risk_completeness",
+              "examples": [
+                "no risk section",
+                "risks without mitigation"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R10_dependency_clarity": {
+      "id": "gap.af.rubric.R10_dependency_clarity",
+      "ask": "[AF conquest R10 dependency_clarity] Are critical external dependencies (Auth, payments, LMS, cloud) explicit with ownership?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R10",
+        "category": "dependency_clarity",
+        "measures": "external deps explicit"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Are critical external dependencies (Auth, payments, LMS, cloud) explicit with ownership?",
+            "focus": "Category R10 (dependency_clarity). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "hidden hard deps",
+              "copy-pasted infra from another product"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies dependency_clarity",
+              "examples": [
+                "Clear evidence for external deps explicit"
+              ]
+            },
+            "false": {
+              "what": "Spec fails dependency_clarity",
+              "examples": [
+                "hidden hard deps",
+                "copy-pasted infra from another product"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R11_measurable_outcomes": {
+      "id": "gap.af.rubric.R11_measurable_outcomes",
+      "ask": "[AF conquest R11 measurable_outcomes] Are success criteria observable within a defined window?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R11",
+        "category": "measurable_outcomes",
+        "measures": "success criteria measurable"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Are success criteria observable within a defined window?",
+            "focus": "Category R11 (measurable_outcomes). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "unmeasurable '세계적 플랫폼' only"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies measurable_outcomes",
+              "examples": [
+                "Clear evidence for success criteria measurable"
+              ]
+            },
+            "false": {
+              "what": "Spec fails measurable_outcomes",
+              "examples": [
+                "unmeasurable '세계적 플랫폼' only"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R12_rollback_plan": {
+      "id": "gap.af.rubric.R12_rollback_plan",
+      "ask": "[AF conquest R12 rollback_plan] Is there a rollback or kill-switch plan appropriate to stage (or justified n/a)?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R12",
+        "category": "rollback_plan",
+        "measures": "failure/rollback considered"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Is there a rollback or kill-switch plan appropriate to stage (or justified n/a)?",
+            "focus": "Category R12 (rollback_plan). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "prod migrate with no rollback"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies rollback_plan",
+              "examples": [
+                "Clear evidence for failure/rollback considered"
+              ]
+            },
+            "false": {
+              "what": "Spec fails rollback_plan",
+              "examples": [
+                "prod migrate with no rollback"
+              ]
+            }
+          },
+          "noul_gte": 0.72
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.af.rubric.R13_scope_discipline": {
+      "id": "gap.af.rubric.R13_scope_discipline",
+      "ask": "[AF conquest R13 scope_discipline] Is the spec free of copy-pasted unrelated project sections and undisciplined scope creep?",
+      "risk": "user_trust",
+      "schema": {
+        "type": "object",
+        "required": [
+          "evidence_refs",
+          "assertion"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 12
+          },
+          "known_issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requires": [
+        "gap.af.spec.corpus"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.spec-audit-row",
+        "import"
+      ],
+      "af_legacy": {
+        "rubric_id": "R13",
+        "category": "scope_discipline",
+        "measures": "no pasted foreign sections / scope creep"
+      },
+      "accept": [
+        {
+          "id": "passes_category",
+          "type": "noul",
+          "instructions": {
+            "question": "Is the spec free of copy-pasted unrelated project sections and undisciplined scope creep?",
+            "focus": "Category R13 (scope_discipline). Fail if detection patterns fire.",
+            "compare": [
+              "`facts.spec_text`",
+              "`proposal.value`",
+              "`facts.known_cli_flags`"
+            ],
+            "fail_examples": [
+              "F23 secret-scan pasted from another repo",
+              "random parallel tracks"
+            ]
+          },
+          "criteria": {
+            "true": {
+              "what": "Spec satisfies scope_discipline",
+              "examples": [
+                "Clear evidence for no pasted foreign sections / scope creep"
+              ]
+            },
+            "false": {
+              "what": "Spec fails scope_discipline",
+              "examples": [
+                "F23 secret-scan pasted from another repo",
+                "random parallel tracks"
+              ]
+            }
+          },
+          "noul_gte": 0.78
+        },
+        {
+          "id": "evidence_grounded",
+          "type": "noul",
+          "instructions": {
+            "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+            "compare": [
+              "`proposal.value.evidence_refs`",
+              "`facts.spec_text`"
+            ]
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    }
+  },
+  "candidates": {
+    "candidate.0001": {
+      "id": "candidate.0001",
+      "gap": "gap.af.spec.corpus",
+      "value": "# CopyRight Shield v4.0 — Global Platform Spec\n\n## 1. 목표\nAI 생성 콘텐츠 저작권 안전 엔진을 한국 1위에서 세계적 B2B 플랫폼으로.\n\n## 4. Phase 로드맵 (PRD 이후 18주)\n\n### Phase 5 — Trust Foundation (3주)\n- Multi-tenant 데이터 모델 — Org / User / ApiKey / AuditLog\n- 인증 마이그레이션 — SITE_PASSWORD → OAuth (Google Workspace + Logto)\n- Privacy 정책 — FERPA / GDPR / 한국 개인정보보호법\n\n### Phase 6 — Public API v1 (3주)\n- OpenAPI 3.1, API key UI, Rate limiting, Webhook, TypeScript SDK, Developer docs\n\n### Phase 7 — LMS Integration (4주)\n- LTI 1.3, Canvas, Google Classroom, Microsoft Teams Education, Schoology, SAML SSO\n\n### Phase 8 — Corpus Marketplace (4주)\n- 출판사 onboarding + KYC, Stripe Connect, AES-256-GCM, DRM access control\n\n### Phase 9 — Compliance + GTM (4주)\n- SOC 2 Type II 감사 시작, FERPA attestation, GDPR DPA, 한국 ISMS-P 검토\n\n## 5. 가격 (App Factory 추정)\n학원 ₩50–200만/년, 출판사 ₩500–2000만/년 (가정)\n\n## 6. 다음 CLI 명령\n```bash\napp-factory implement --tier builder-mini-behavior \\\n  --modules \"jtbd,mab,northstar,...\" \\\n  --feature-focus \"phase 5 trust foundation\"\n```\n\n## 7. North Star\n\"월간 A등급 인증 건수: 1년차 50,000 / 3년차 1,000,000\"\n\n## 9. F23 — Secret Scan CI (병렬 트랙)\n[section copy-pasted from another project — copyright-cleansing has no .github/workflows yet]\n",
+      "by": "import.fixture",
+      "model": null,
+      "meta": {}
+    },
+    "candidate.0002": {
+      "id": "candidate.0002",
+      "gap": "gap.af.rubric.R01_timeline_realism",
+      "value": {
+        "evidence_refs": [
+          "§4 Phase 7: 4주 · Canvas/Classroom/Teams/Schoology/LTI/SAML",
+          "§4 Phase 8: 4주 marketplace+DRM"
+        ],
+        "assertion": "공격적이나 실행 가능하다"
+      },
+      "by": "human",
+      "model": null,
+      "meta": {}
+    },
+    "candidate.0003": {
+      "id": "candidate.0003",
+      "gap": "gap.af.rubric.R03_team_budget_clarity",
+      "value": {
+        "evidence_refs": [
+          "팀/자금 섹션 부재",
+          "18주 로드맵만 존재"
+        ],
+        "assertion": "1인 부트스트랩으로 충분"
+      },
+      "by": "human",
+      "model": null,
+      "meta": {}
+    },
+    "candidate.0004": {
+      "id": "candidate.0004",
+      "gap": "gap.af.rubric.R05_cli_flag_validity",
+      "value": {
+        "evidence_refs": [
+          "§6 implement 명령의 --modules"
+        ],
+        "assertion": "--modules 는 유효하다"
+      },
+      "by": "human",
+      "model": null,
+      "meta": {}
+    }
+  },
+  "seals": {
+    "seal.0001": {
+      "id": "seal.0001",
+      "gap": "gap.af.spec.corpus",
+      "candidate": "candidate.0001",
+      "strike_id": "strike.seal.0001",
+      "provider": "typesafe:jev-1.13.0",
+      "answers": {
+        "is_spec_like": {
+          "noul": 0.96
+        }
+      },
+      "policy_risk": "product_foundation",
+      "state_hash": "sha256:d44ea10e422f08531485f14acb38d36b10cafc7ed839cc33dc86400bc21a4aae",
+      "questions_hash": "sha256:72f622f19f544e56d0d89ddba600d20a7dedc776858a8af64d81be523bdbb9b9",
+      "at": "2026-09-19T07:40:07+00:00",
+      "deprecated": false,
+      "superseded_by": null
+    }
+  },
+  "effects": {
+    "effect.aplus_implement_unlock": {
+      "id": "effect.aplus_implement_unlock",
+      "after": [
+        "gap.af.spec.corpus",
+        "gap.af.rubric.R01_timeline_realism",
+        "gap.af.rubric.R02_assumption_evidence",
+        "gap.af.rubric.R03_team_budget_clarity",
+        "gap.af.rubric.R04_competitive_depth",
+        "gap.af.rubric.R05_cli_flag_validity",
+        "gap.af.rubric.R06_stage_fit",
+        "gap.af.rubric.R07_north_star_quality",
+        "gap.af.rubric.R08_pricing_evidence",
+        "gap.af.rubric.R09_risk_completeness",
+        "gap.af.rubric.R10_dependency_clarity",
+        "gap.af.rubric.R11_measurable_outcomes",
+        "gap.af.rubric.R12_rollback_plan",
+        "gap.af.rubric.R13_scope_discipline"
+      ],
+      "run": "emit_aplus_passport",
+      "risk": "product_foundation",
+      "status": "locked",
+      "replaces": "overall.aplus_threshold_passed in spec-audit"
+    }
+  },
+  "journal": [
+    {
+      "op": "open",
+      "pack": "conquest.audit-spec",
+      "at": "2026-09-19T07:40:02+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0001",
+      "gap": "gap.af.spec.corpus",
+      "at": "2026-09-19T07:40:02+00:00"
+    },
+    {
+      "op": "strike_fail",
+      "gap": "gap.af.spec.corpus",
+      "candidate": "candidate.0001",
+      "failures": [
+        "is_spec_like: noul 0.550 < 0.65"
+      ],
+      "provider": "heuristic:v0",
+      "at": "2026-09-19T07:40:02+00:00"
+    },
+    {
+      "op": "seal",
+      "id": "seal.0001",
+      "gap": "gap.af.spec.corpus",
+      "at": "2026-09-19T07:40:07+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0002",
+      "gap": "gap.af.rubric.R01_timeline_realism",
+      "at": "2026-09-19T07:40:13+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0003",
+      "gap": "gap.af.rubric.R03_team_budget_clarity",
+      "at": "2026-09-19T07:40:13+00:00"
+    },
+    {
+      "op": "candidate",
+      "id": "candidate.0004",
+      "gap": "gap.af.rubric.R05_cli_flag_validity",
+      "at": "2026-09-19T07:40:13+00:00"
+    },
+    {
+      "op": "strike_fail",
+      "gap": "gap.af.rubric.R01_timeline_realism",
+      "candidate": "candidate.0002",
+      "failures": [
+        "passes_category: noul 0.100 < 0.72"
+      ],
+      "provider": "typesafe:jev-1.13.0",
+      "at": "2026-09-19T07:40:13+00:00"
+    },
+    {
+      "op": "strike_fail",
+      "gap": "gap.af.rubric.R03_team_budget_clarity",
+      "candidate": "candidate.0003",
+      "failures": [
+        "passes_category: noul 0.030 < 0.72",
+        "evidence_grounded: noul 0.460 < 0.7"
+      ],
+      "provider": "typesafe:jev-1.13.0",
+      "at": "2026-09-19T07:40:14+00:00"
+    },
+    {
+      "op": "strike_fail",
+      "gap": "gap.af.rubric.R05_cli_flag_validity",
+      "candidate": "candidate.0004",
+      "failures": [
+        "passes_category: noul 0.040 < 0.78"
+      ],
+      "provider": "typesafe:jev-1.13.0",
+      "at": "2026-09-19T07:40:15+00:00"
+    }
+  ],
+  "vein": {}
+}

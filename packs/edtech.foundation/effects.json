@@ -1,0 +1,15 @@
+{
+  "effect.emit_context": {
+    "id": "effect.emit_context",
+    "after": [
+      "gap.edtech.jtbd.core_job",
+      "gap.edtech.persona.primary",
+      "gap.edtech.vision.one_liner",
+      "gap.edtech.constraints.non_negotiables",
+      "gap.edtech.ethics.dark_pattern_ban"
+    ],
+    "run": "emit_context_md",
+    "risk": "read",
+    "status": "locked"
+  }
+}

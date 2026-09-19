@@ -1,0 +1,9 @@
+{
+  "name": "seal-graph",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Optional Node deps for TypeSafe/Jev mint. The Python kernel has zero runtime deps.",
+  "dependencies": {
+    "@typesafe-ai/sdk": "^1.13.0"
+  }
+}

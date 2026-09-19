@@ -1,0 +1,64 @@
+{
+  "id": "gap.edtech.persona.primary",
+  "ask": "일차 사용자(또는 구매 결정자)는 누구이며, 어떤 제약 속에 있는가?",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "object",
+    "required": [
+      "who",
+      "context",
+      "constraint"
+    ],
+    "properties": {
+      "who": {
+        "type": "string"
+      },
+      "context": {
+        "type": "string"
+      },
+      "constraint": {
+        "type": "string"
+      }
+    }
+  },
+  "requires": [
+    "gap.edtech.jtbd.core_job"
+  ],
+  "fillers": [
+    "human",
+    "generative.af.persona"
+  ],
+  "accept": [
+    {
+      "id": "persona_concrete",
+      "type": "noul",
+      "instructions": {
+        "question": "Is `proposal.value` concrete enough to reject wrong features, given sealed `facts.jtbd`?",
+        "compare": [
+          "`proposal.value`",
+          "`facts.jtbd`"
+        ]
+      },
+      "noul_gte": 0.7
+    },
+    {
+      "id": "buyer_user_clarity",
+      "type": "choice",
+      "instructions": {
+        "question": "Who is primarily described in `proposal.value`?"
+      },
+      "criteria": {
+        "learner": "The child/student who uses the learning loop",
+        "parent_buyer": "The parent who pays or supervises",
+        "teacher": "School/teacher operator",
+        "muddled": "Mixed without priority"
+      },
+      "choice_in": [
+        "learner",
+        "parent_buyer",
+        "teacher"
+      ],
+      "confidence_gte": 0.55
+    }
+  ]
+}

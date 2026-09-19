@@ -1,0 +1,52 @@
+{
+  "id": "conquest.audit-spec",
+  "version": "0.2.0",
+  "title": "Conquest: App Factory audit-spec → SEAL gaps",
+  "description": "Destroys terminal late A+ audit. Each R01–R13 is a Gap with accept locks. No seal, no advance to implement.",
+  "destroys": {
+    "app_factory_module": "modules/L9-quality/spec-audit",
+    "cli": "app-factory audit-spec",
+    "happy_path": "ship → pack → audit-spec boss fight"
+  },
+  "replaces_with": "seal open --pack conquest.audit-spec → fill corpus → strike each rubric gap",
+  "tier_noul_defaults": {
+    "T1": 0.65,
+    "T2": 0.72,
+    "T3": 0.8
+  },
+  "gaps": [
+    "gap.af.spec.corpus",
+    "gap.af.rubric.R01_timeline_realism",
+    "gap.af.rubric.R02_assumption_evidence",
+    "gap.af.rubric.R03_team_budget_clarity",
+    "gap.af.rubric.R04_competitive_depth",
+    "gap.af.rubric.R05_cli_flag_validity",
+    "gap.af.rubric.R06_stage_fit",
+    "gap.af.rubric.R07_north_star_quality",
+    "gap.af.rubric.R08_pricing_evidence",
+    "gap.af.rubric.R09_risk_completeness",
+    "gap.af.rubric.R10_dependency_clarity",
+    "gap.af.rubric.R11_measurable_outcomes",
+    "gap.af.rubric.R12_rollback_plan",
+    "gap.af.rubric.R13_scope_discipline"
+  ],
+  "unlock_effects": {
+    "effect.aplus_implement_unlock": [
+      "gap.af.spec.corpus",
+      "gap.af.rubric.R01_timeline_realism",
+      "gap.af.rubric.R02_assumption_evidence",
+      "gap.af.rubric.R03_team_budget_clarity",
+      "gap.af.rubric.R04_competitive_depth",
+      "gap.af.rubric.R05_cli_flag_validity",
+      "gap.af.rubric.R06_stage_fit",
+      "gap.af.rubric.R07_north_star_quality",
+      "gap.af.rubric.R08_pricing_evidence",
+      "gap.af.rubric.R09_risk_completeness",
+      "gap.af.rubric.R10_dependency_clarity",
+      "gap.af.rubric.R11_measurable_outcomes",
+      "gap.af.rubric.R12_rollback_plan",
+      "gap.af.rubric.R13_scope_discipline"
+    ]
+  },
+  "s5": "Post-passport CONTEXT + codegen stub chain"
+}

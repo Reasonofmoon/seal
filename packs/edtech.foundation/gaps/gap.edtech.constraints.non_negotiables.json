@@ -1,0 +1,38 @@
+{
+  "id": "gap.edtech.constraints.non_negotiables",
+  "ask": "절대 깨면 안 되는 제약 목록 (예: 아동 데이터, 오프라인, 한국어 UX, 예산)",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "array",
+    "minItems": 2,
+    "items": {
+      "type": "string",
+      "minLength": 4
+    }
+  },
+  "requires": [
+    "gap.edtech.persona.primary"
+  ],
+  "fillers": [
+    "human",
+    "generative.af.constraints"
+  ],
+  "accept": [
+    {
+      "id": "constraints_actionable",
+      "type": "noul",
+      "instructions": {
+        "question": "Can an engineer use `proposal.value` to reject a design option without asking again?"
+      },
+      "noul_gte": 0.7
+    },
+    {
+      "id": "child_safety_present",
+      "type": "noul",
+      "instructions": {
+        "question": "Given EdTech context, does `proposal.value` include at least one child/privacy/safety constraint, or explicitly mark N/A with reason in the list text?"
+      },
+      "noul_gte": 0.65
+    }
+  ]
+}

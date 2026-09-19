@@ -1,0 +1,89 @@
+{
+  "id": "gap.af.rubric.R07_north_star_quality",
+  "ask": "[AF conquest R07 north_star_quality] Is the north-star metric measurable, leading, and not a vanity target without instrumentation?",
+  "risk": "product_foundation",
+  "schema": {
+    "type": "object",
+    "required": [
+      "evidence_refs",
+      "assertion"
+    ],
+    "properties": {
+      "evidence_refs": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string"
+        }
+      },
+      "assertion": {
+        "type": "string",
+        "minLength": 12
+      },
+      "known_issues": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "requires": [
+    "gap.af.spec.corpus"
+  ],
+  "fillers": [
+    "human",
+    "generative.af.spec-audit-row",
+    "import"
+  ],
+  "af_legacy": {
+    "rubric_id": "R07",
+    "category": "north_star_quality",
+    "measures": "north star measurable and non-vanity"
+  },
+  "accept": [
+    {
+      "id": "passes_category",
+      "type": "noul",
+      "instructions": {
+        "question": "Is the north-star metric measurable, leading, and not a vanity target without instrumentation?",
+        "focus": "Category R07 (north_star_quality). Fail if detection patterns fire.",
+        "compare": [
+          "`facts.spec_text`",
+          "`proposal.value`",
+          "`facts.known_cli_flags`"
+        ],
+        "fail_examples": [
+          "1,000,000 certifications with no instrumentation plan"
+        ]
+      },
+      "criteria": {
+        "true": {
+          "what": "Spec satisfies north_star_quality",
+          "examples": [
+            "Clear evidence for north star measurable and non-vanity"
+          ]
+        },
+        "false": {
+          "what": "Spec fails north_star_quality",
+          "examples": [
+            "1,000,000 certifications with no instrumentation plan"
+          ]
+        }
+      },
+      "noul_gte": 0.72
+    },
+    {
+      "id": "evidence_grounded",
+      "type": "noul",
+      "instructions": {
+        "question": "Do `proposal.value.evidence_refs` quote or point to real passages that exist in `facts.spec_text`?",
+        "compare": [
+          "`proposal.value.evidence_refs`",
+          "`facts.spec_text`"
+        ]
+      },
+      "noul_gte": 0.7
+    }
+  ]
+}

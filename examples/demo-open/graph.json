@@ -1,0 +1,318 @@
+{
+  "seal_version": "0.1.0",
+  "product": {
+    "id": "demo-open",
+    "idea": "한국 어린이 영어 독서 습관 앱",
+    "pack": "edtech.foundation",
+    "pack_version": "0.1.0",
+    "lang": "ko",
+    "created_at": "2026-09-19T07:55:30+00:00"
+  },
+  "gaps": {
+    "gap.edtech.jtbd.core_job": {
+      "id": "gap.edtech.jtbd.core_job",
+      "ask": "학습자가 이 앱을 ‘고용’하는 지속 가능한 일은 무엇인가? (솔루션 문장 금지)",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "string",
+        "minLength": 20
+      },
+      "requires": [],
+      "fillers": [
+        "human",
+        "generative.af.jtbd",
+        "import"
+      ],
+      "accept": [
+        {
+          "id": "supports_evidence",
+          "type": "noul",
+          "instructions": {
+            "question": "Does `proposal.value` name a durable job-to-be-done rather than a feature list?",
+            "focus": "Reject solution-shaped statements disguised as jobs."
+          },
+          "criteria": {
+            "true": {
+              "what": "Outcome-framed job a person hires the product to do",
+              "examples": [
+                "Keep a daily English reading habit without parental nagging"
+              ]
+            },
+            "false": {
+              "what": "Feature, stack, or UI wish",
+              "examples": [
+                "Build a gamified quiz app with streaks"
+              ]
+            }
+          },
+          "noul_gte": 0.75
+        },
+        {
+          "id": "form",
+          "type": "choice",
+          "instructions": {
+            "question": "What form is `proposal.value`?",
+            "focus": "Pick one."
+          },
+          "criteria": {
+            "outcome_framed": "States a progress the user wants to make",
+            "solution_framed": "States a product/feature to build",
+            "vague": "Too abstract to guide product decisions"
+          },
+          "choice_in": [
+            "outcome_framed"
+          ],
+          "confidence_gte": 0.6
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.edtech.persona.primary": {
+      "id": "gap.edtech.persona.primary",
+      "ask": "일차 사용자(또는 구매 결정자)는 누구이며, 어떤 제약 속에 있는가?",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "object",
+        "required": [
+          "who",
+          "context",
+          "constraint"
+        ],
+        "properties": {
+          "who": {
+            "type": "string"
+          },
+          "context": {
+            "type": "string"
+          },
+          "constraint": {
+            "type": "string"
+          }
+        }
+      },
+      "requires": [
+        "gap.edtech.jtbd.core_job"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.persona"
+      ],
+      "accept": [
+        {
+          "id": "persona_concrete",
+          "type": "noul",
+          "instructions": {
+            "question": "Is `proposal.value` concrete enough to reject wrong features, given sealed `facts.jtbd`?",
+            "compare": [
+              "`proposal.value`",
+              "`facts.jtbd`"
+            ]
+          },
+          "noul_gte": 0.7
+        },
+        {
+          "id": "buyer_user_clarity",
+          "type": "choice",
+          "instructions": {
+            "question": "Who is primarily described in `proposal.value`?"
+          },
+          "criteria": {
+            "learner": "The child/student who uses the learning loop",
+            "parent_buyer": "The parent who pays or supervises",
+            "teacher": "School/teacher operator",
+            "muddled": "Mixed without priority"
+          },
+          "choice_in": [
+            "learner",
+            "parent_buyer",
+            "teacher"
+          ],
+          "confidence_gte": 0.55
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.edtech.vision.one_liner": {
+      "id": "gap.edtech.vision.one_liner",
+      "ask": "이 제품이 12개월 뒤에도 같은 문장으로 설명되는가? (한 줄)",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "string",
+        "minLength": 16,
+        "maxLength": 160
+      },
+      "requires": [
+        "gap.edtech.jtbd.core_job",
+        "gap.edtech.persona.primary"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.vision"
+      ],
+      "accept": [
+        {
+          "id": "aligned_to_jtbd",
+          "type": "noul",
+          "instructions": {
+            "question": "Does `proposal.value` stay faithful to sealed `facts.jtbd` without inventing metrics?",
+            "compare": [
+              "`proposal.value`",
+              "`facts.jtbd`",
+              "`facts.persona`"
+            ]
+          },
+          "noul_gte": 0.75
+        },
+        {
+          "id": "metric_honesty",
+          "type": "noul",
+          "instructions": {
+            "question": "Does `proposal.value` avoid fabricated performance numbers or LIVE-style trust claims?"
+          },
+          "noul_gte": 0.8
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.edtech.constraints.non_negotiables": {
+      "id": "gap.edtech.constraints.non_negotiables",
+      "ask": "절대 깨면 안 되는 제약 목록 (예: 아동 데이터, 오프라인, 한국어 UX, 예산)",
+      "risk": "product_foundation",
+      "schema": {
+        "type": "array",
+        "minItems": 2,
+        "items": {
+          "type": "string",
+          "minLength": 4
+        }
+      },
+      "requires": [
+        "gap.edtech.persona.primary"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.constraints"
+      ],
+      "accept": [
+        {
+          "id": "constraints_actionable",
+          "type": "noul",
+          "instructions": {
+            "question": "Can an engineer use `proposal.value` to reject a design option without asking again?"
+          },
+          "noul_gte": 0.7
+        },
+        {
+          "id": "child_safety_present",
+          "type": "noul",
+          "instructions": {
+            "question": "Given EdTech context, does `proposal.value` include at least one child/privacy/safety constraint, or explicitly mark N/A with reason in the list text?"
+          },
+          "noul_gte": 0.65
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    },
+    "gap.edtech.ethics.dark_pattern_ban": {
+      "id": "gap.edtech.ethics.dark_pattern_ban",
+      "ask": "금지할 다크패턴·조작 UX를 명시하라 (출석 강요, 가짜 긴급, 보호자 우회 등)",
+      "risk": "user_trust",
+      "schema": {
+        "type": "array",
+        "minItems": 3,
+        "items": {
+          "type": "string"
+        }
+      },
+      "requires": [
+        "gap.edtech.constraints.non_negotiables"
+      ],
+      "fillers": [
+        "human",
+        "generative.af.ethics"
+      ],
+      "accept": [
+        {
+          "id": "bans_specific",
+          "type": "noul",
+          "instructions": {
+            "question": "Are items in `proposal.value` specific actionable bans (not vague 'be ethical')?",
+            "focus": "Each item should name a forbidden UX pattern."
+          },
+          "criteria": {
+            "true": {
+              "what": "Concrete banned behaviors",
+              "examples": [
+                "Fake urgency timers",
+                "Guilt-streak punishment for children"
+              ]
+            },
+            "false": {
+              "what": "Vague ethics slogans",
+              "examples": [
+                "Be kind",
+                "No dark patterns"
+              ]
+            }
+          },
+          "noul_gte": 0.75
+        },
+        {
+          "id": "covers_coercion",
+          "type": "noul",
+          "instructions": {
+            "question": "Does `proposal.value` ban coercive pressure on a child learner (punishment, forced attendance scoring, shame streaks)?"
+          },
+          "noul_gte": 0.7
+        },
+        {
+          "id": "covers_deception",
+          "type": "noul",
+          "instructions": {
+            "question": "Does `proposal.value` ban deceptive UX (fake deadlines, false completion, fabricated social proof)?"
+          },
+          "noul_gte": 0.7
+        },
+        {
+          "id": "covers_guardian_bypass",
+          "type": "noul",
+          "instructions": {
+            "question": "Does `proposal.value` ban bypassing a parent/guardian (hidden charges, sneaking past consent)?"
+          },
+          "noul_gte": 0.7
+        }
+      ],
+      "status": "open",
+      "sealed_by": null
+    }
+  },
+  "candidates": {},
+  "seals": {},
+  "effects": {
+    "effect.emit_context": {
+      "id": "effect.emit_context",
+      "after": [
+        "gap.edtech.jtbd.core_job",
+        "gap.edtech.persona.primary",
+        "gap.edtech.vision.one_liner",
+        "gap.edtech.constraints.non_negotiables",
+        "gap.edtech.ethics.dark_pattern_ban"
+      ],
+      "run": "emit_context_md",
+      "risk": "read",
+      "status": "locked"
+    }
+  },
+  "journal": [
+    {
+      "op": "open",
+      "pack": "edtech.foundation",
+      "at": "2026-09-19T07:55:30+00:00"
+    }
+  ],
+  "vein": {}
+}
